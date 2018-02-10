@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.asus.oralhealth.AnalyzeActivity"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home"
+            android:textSize="@dimen/fontSize"
+            android:textStyle="bold"
+            android:padding="3dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/homesmall"
+            android:background="@color/pink"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/label"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="@string/back"
+                android:textSize="@dimen/fontSize"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="@string/next"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/fontSize"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Analyze Data"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="3dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/space"
+        android:background="@color/blacklight">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dateTxt"
+                android:textSize="@dimen/fontSize20"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/datetxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/space"/>
+            <TextView
+                android:id="@+id/showRoom"
+                android:textSize="@dimen/fontSize20"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/space"/>
+            <TextView
+                android:id="@+id/showSchool"
+                android:textSize="@dimen/fontSize20"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="@string/school"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/space"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textAlignment="viewStart"
+            android:layout_marginLeft="@dimen/space">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/showdate"
+                    android:textSize="@dimen/fontSize20"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space"/>
+                <TextView
+                    android:id="@+id/btnChangeDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/calendar"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="@dimen/fontSize20"
+                    android:layout_margin="@dimen/space"/>
+            </LinearLayout>
+            <Spinner
+                android:id="@+id/room"
+                android:textSize="@dimen/fontSize20"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space">
+            </Spinner>
+            <Spinner
+                android:id="@+id/school"
+                android:textSize="@dimen/fontSize"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/space">
+            </Spinner>
+
+
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/analyzeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Analyze"
+        android:layout_gravity="center"
+        android:textSize="@dimen/fontSize"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

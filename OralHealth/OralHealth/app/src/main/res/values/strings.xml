@@ -1,0 +1,83 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">OralHealth</string>
+    <string name="title_activity_login">Log In</string>
+
+    <!-- Strings related to login -->
+    <string name="Username">Username</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="password">Password</string>
+    <string name="cfpassword">Confirm Password</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="action_sign_up_short">Sign up</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing username
+        completions."
+    </string>
+    <string name="signup">No account yet? <b>Sign up here.</b></string>
+    <string name="record">Record Data</string>
+    <string name="view">View and Analyze Data</string>
+    <string name="analyze">Analyze Data</string>
+    <string name="export">Export Data</string>
+    <string name="exportPDF">Export Report PDF</string>
+    <string name="exportExcel">Export Excel</string>
+    <string name="exit">Exit</string>
+    <string name="home">Home</string>
+    <string name="next"><b>Next</b></string>
+    <string name="back"> <b>Back</b> </string>
+    <string name="edit"> <b>Edit</b> </string>
+    <string name="date">choose date</string>
+    <string name="done">Done</string>
+    <string name="from">from :</string>
+    <string name="to">To : </string>
+    <string name="excel">เอกสารรายงานผล Excel</string>
+    <string name="parent">เอกสารรายงานผลผู้ปกครอง</string>
+    <string name="teacher">เอกสารรายงานผลครูประจำชั้น</string>
+    <string name="headmaster">เอกสารรายงานผลครูใหญ่</string>
+    <string name="ministry">เอกสารรายงานผลทันตแพทย์</string>
+    <string-array name="testPTid">
+        <item>2110600001</item>
+        <item>2110600002</item>
+        <item>2110600003</item>
+        <item>2110600004</item>
+        <item>2110600005</item>
+    </string-array>
+    <string-array name="room">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="school">
+        <item>อนุบาลปทุมธานี</item>
+        <item>อนุบาลแห่งมหาวิทยาลัยธรรมศาสตร์</item>
+        <item>ธัญวิทย์</item>
+        <item>ทิพพากรวิทยาการ</item>
+    </string-array>
+    <string-array name="sort">
+        <item>รหัสประจำตัวผู้ป่วย</item>
+        <item>ผลวิเคราะห์ความเสี่ยง</item>
+        <item>เวลาตรวจ</item>
+        <item>ชื่อ-นามสกุลผู้ป่วย</item>
+        <item>ทันตแพทย์ผู้ตรวจ</item>
+    </string-array>
+    <string name="PTid">Pateint ID : </string>
+    <string name="datetxt">Date : </string>
+    <string name="sorttxt">Sort by : </string>
+    <string name="room">Room : </string>
+    <string name="school">School : </string>
+    <string name="success">Saved</string>
+    <string name="good">No abnormal teeth</string>
+
+    <string name="kws_caption">Say start to record with voice</string>
+    <string name="digits_caption">say tooth position in English</string>
+
+    <string name="instruction">Enter the words above</string>
+    <string name="verify">Verify</string>
+    <string name="reload">Reload</string>
+    <string name="show_error">Failed to show CAPTCHA</string>
+    <string name="verification_success">Your answer is verified successfully</string>
+    <string name="verification_failed">You did not enter the CAPTCHA phrase correctly</string>
+</resources>

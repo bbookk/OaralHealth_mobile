@@ -1,0 +1,15 @@
+cmudict-en-us.dict
+cmudict.dict
+cmudict.phones
+cmudict.symbols
+cmudict.vp
+digits.gram
+en-us/README
+en-us/feat.params
+en-us/mdef
+en-us/means
+en-us/mixture_weights
+en-us/noisedict
+en-us/sendump
+en-us/transition_matrices
+en-us/variances

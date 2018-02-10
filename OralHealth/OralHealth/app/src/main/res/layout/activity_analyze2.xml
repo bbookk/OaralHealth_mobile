@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="com.example.asus.oralhealth.Analyze2Activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home"
+            android:textSize="@dimen/fontSize"
+            android:textStyle="bold"
+            android:padding="3dp"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:drawableLeft="@drawable/homesmall"
+            android:background="@color/pink"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/label"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"
+                android:text="@string/back"
+                android:textSize="@dimen/fontSize"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="@string/done"
+                    android:textAlignment="textEnd"
+                    android:textSize="@dimen/fontSize"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Analytical Result"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/room_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/fontSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/date_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/fontSize"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/school_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/fontSize"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/data_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:background="#ffffff"
+            android:shrinkColumns="*"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
+
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/label">
+
+                <TextView
+                    android:id="@+id/patient_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Pateint ID"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/sex_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Sex"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/name_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Name"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/examiner_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Examiner"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/risk_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Risk"
+                    android:textColor="#000000" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blacklight">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="2309600001"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Female" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="กชกร นาระหัด" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="ANCHI" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:id="@+id/progressbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxHeight="20dp"
+                        android:minHeight="20dp"
+                        android:maxWidth="30dp"
+                        android:minWidth="30dp"
+                        android:progress="100"
+                        android:progressTint="@color/red" />
+                    <TextView
+                        android:id="@+id/showPercent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="6.5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blacklight">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="2309600002"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Female" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="กษิรา ปิลาผล" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="ANCHI" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxHeight="20dp"
+                        android:minHeight="20dp"
+                        android:maxWidth="30dp"
+                        android:minWidth="30dp"
+                        android:progress="100"
+                        android:progressTint="@color/orange" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:layout_marginLeft="5dp"
+                        android:text="4.2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blacklight">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="2309600003"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Female" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="โชติกา  คิดถูก" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="WISAN" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxHeight="20dp"
+                        android:minHeight="20dp"
+                        android:maxWidth="30dp"
+                        android:minWidth="30dp"
+                        android:progress="100"
+                        android:progressTint="@color/yellow" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="2.5"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blacklight">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="2309600004"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="Male" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="พัชระ  อัมวัน" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="20dip"
+                    android:text="SSPEN" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+                    <ProgressBar
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxHeight="20dp"
+                        android:minHeight="20dp"
+                        android:maxWidth="30dp"
+                        android:minWidth="30dp"
+                        android:progress="100"
+                        android:progressTint="@color/green" />
+                    <TextView
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="0.9"
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
