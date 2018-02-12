@@ -1,167 +1,85 @@
 package com.example.asus.oralhealth;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class testActivity extends AppCompatActivity {
-    SQLiteDatabase sqLiteDatabase;
-
-    Button SaveButtonInSQLite, ShowSQLiteDataInListView;
-
-    String HttpJSonURL = "http://localhost/OralHealth_project/SubjectFullForm.php";
-
-    ProgressDialog progressDialog;
+    private static final String TAG = DbHelper.class.getSimpleName();
+    private String JSON_STRING;
+    private DbHelper db;
+    String json_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-
-        SaveButtonInSQLite = (Button)findViewById(R.id.button);
-
-        ShowSQLiteDataInListView = (Button)findViewById(R.id.button2);
-
-        SaveButtonInSQLite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                SQLiteDataBaseBuild();
-
-                SQLiteTableBuild();
-
-                DeletePreviousData();
-
-                new StoreJSonDataInToSQLiteClass(testActivity.this).execute();
-
-            }
-        });
-
-        ShowSQLiteDataInListView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(testActivity.this, ShowDataActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
+//        TextView txtView2 = (TextView) findViewById(R.id.txtView2);
 
     }
 
-    private class StoreJSonDataInToSQLiteClass extends AsyncTask<Void, Void, Void> {
-
-        public Context context;
-
-        String FinalJSonResult;
-
-        public StoreJSonDataInToSQLiteClass(Context context) {
-
-            this.context = context;
-        }
+    private class BackgroundTask extends AsyncTask<Void, Void, String> {
+        String JSON_URL;
 
         @Override
         protected void onPreExecute() {
-
-            super.onPreExecute();
-
-            progressDialog = new ProgressDialog(testActivity.this);
-            progressDialog.setTitle("LOADING");
-            progressDialog.setMessage("Please Wait");
-            progressDialog.show();
-
+            JSON_URL = "http://192.168.1.2/OralHealth_project/getData.php";
         }
 
         @Override
-        protected Void doInBackground(Void... arg0) {
-
-            HttpServiceClass httpServiceClass = new HttpServiceClass(HttpJSonURL);
-
+        protected String doInBackground(Void... params) {
             try {
-                httpServiceClass.ExecutePostRequest();
-
-                if (httpServiceClass.getResponseCode() == 200) {
-
-                    FinalJSonResult = httpServiceClass.getResponse();
-
-                    if (FinalJSonResult != null) {
-
-                        JSONArray jsonArray = null;
-                        try {
-
-                            jsonArray = new JSONArray(FinalJSonResult);
-                            JSONObject jsonObject;
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-
-                                jsonObject = jsonArray.getJSONObject(i);
-
-                                String tempSubjectName = jsonObject.getString("SubjectName");
-
-                                String tempSubjectFullForm = jsonObject.getString("SubjectFullForm");
-
-                                String SQLiteDataBaseQueryHolder = "INSERT INTO "+SQLiteHelper.TABLE_NAME+" (SubjectName,SubjectFullForm) VALUES('"+tempSubjectName+"', '"+tempSubjectFullForm+"');";
-
-                                sqLiteDatabase.execSQL(SQLiteDataBaseQueryHolder);
-
-                            }
-                        } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-
-                    Toast.makeText(context, httpServiceClass.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                StringBuilder JSON_DATA = new StringBuilder();
+                URL url = new URL(JSON_URL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = httpURLConnection.getInputStream();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                while ((JSON_STRING = reader.readLine()) != null) {
+                    JSON_DATA.append(JSON_STRING).append("\n");
                 }
+                return JSON_DATA.toString().trim();
+
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void result)
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
 
-        {
-            sqLiteDatabase.close();
-
-            progressDialog.dismiss();
-
-            Toast.makeText(testActivity.this,"Load Done", Toast.LENGTH_LONG).show();
-
+        @Override
+        protected void onPostExecute(String result) {
+            TextView json = (TextView) findViewById(R.id.txtView);
+            json.setText(result);
+            json_string = result;
         }
     }
 
-
-    public void SQLiteDataBaseBuild(){
-
-        sqLiteDatabase = openOrCreateDatabase(SQLiteHelper.DATABASE_NAME, Context.MODE_PRIVATE, null);
-
+    public void getJson(View view) {
+        new BackgroundTask().execute();
     }
 
-    public void SQLiteTableBuild(){
+    public void parseJson(View view){
 
-        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS "+SQLiteHelper.TABLE_NAME+"("+SQLiteHelper.Table_Column_ID+" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "+SQLiteHelper.Table_Column_1_Subject_Name+" VARCHAR, "+SQLiteHelper.Table_Column_2_SubjectFullForm+" VARCHAR);");
-
-    }
-
-    public void DeletePreviousData(){
-
-        sqLiteDatabase.execSQL("DELETE FROM "+SQLiteHelper.TABLE_NAME+"");
-
+        if (json_string == null){
+            Toast.makeText(testActivity.this, "Get Json Before.",Toast.LENGTH_SHORT).show();
+        }else{
+            Intent i = new Intent(testActivity.this , ListViewActivity.class);
+            i.putExtra("json_data",json_string);
+            startActivity(i);
+        }
     }
 }
