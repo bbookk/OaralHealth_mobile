@@ -9,3 +9,4 @@ database install
 - run http://localhost/phpmyadmin/
 - create database oralhealth and student table 
 - import file student.sql to database 
+- Test Push
