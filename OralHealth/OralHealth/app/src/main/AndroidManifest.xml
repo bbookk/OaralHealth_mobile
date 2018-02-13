@@ -58,7 +58,7 @@
             android:name=".ExportActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".testActivity" />
-        <activity android:name=".ShowDataActivity"></activity>
+        <activity android:name=".ListViewActivity"></activity>
     </application>
 
 </manifest>
