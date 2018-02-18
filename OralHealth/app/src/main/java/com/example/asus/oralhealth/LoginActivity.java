@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -110,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         signinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(LoginActivity.this, testActivity.class);
+                Intent i = new Intent(LoginActivity.this, DetectActivity.class);
                 EditText edt = (EditText)findViewById(R.id.username);
                 String usernameValue = edt.getText().toString();
                 i.putExtra("username", usernameValue);
@@ -119,7 +120,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+
+
     }
+
 
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {

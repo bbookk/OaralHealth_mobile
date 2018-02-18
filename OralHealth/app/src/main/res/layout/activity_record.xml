@@ -84,7 +84,6 @@
         android:layout_gravity="center"/>
 
     <LinearLayout
-        android:id="@+id/gotoLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -93,30 +92,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/space"
-            android:text="Patient ID : "
+            android:text="Go to Patient ID : "
             android:textColor="@color/black"
             android:textSize="@dimen/fontSize_signup"
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/studentID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/fontSize_signup">
-        </Spinner>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/space"
-            android:text="Or Patient Name : "
-            android:textColor="@color/black"
-            android:textSize="@dimen/fontSize_signup"
-            android:textStyle="bold" />
-
-        <Spinner
-            android:id="@+id/studentName"
+            android:id="@+id/go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"

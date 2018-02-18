@@ -13,6 +13,7 @@
         android:text="get json"
         android:onClick="getJson"/>
 
+
     <Button
         android:id="@+id/parseData"
         android:layout_width="wrap_content"
@@ -20,13 +21,16 @@
         android:text="parse json"
         android:onClick="parseJson"/>
 
-    <TextView
-        android:id="@+id/txtView"
+    <Button
+        android:id="@+id/save"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="parse json"
+        />
+
 
     <TextView
-        android:id="@+id/txtView2"
+        android:id="@+id/txtView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

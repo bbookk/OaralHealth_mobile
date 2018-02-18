@@ -10,3 +10,9 @@ database install
 - create database oralhealth and student table 
 - import file student.sql to database 
 - Test Push
+
+
+success
+- read data from mysql to store in sqlite success
+- detect internet to update data success
+- *bug when delete data in mysql but in sqlite is not delete too.*

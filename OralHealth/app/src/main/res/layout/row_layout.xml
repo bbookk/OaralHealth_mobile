@@ -15,9 +15,9 @@
     <TextView
         android:layout_width="120dp"
         android:layout_height="match_parent"
-        android:id="@+id/txt_schoolName"
+        android:id="@+id/txt_studentName"
         android:layout_toRightOf="@+id/txt_id"
-        android:text="School Name"
+        android:text="Student Name"
         android:gravity="center"
         android:textAppearance="?android:textAppearanceLarge"/>
 
