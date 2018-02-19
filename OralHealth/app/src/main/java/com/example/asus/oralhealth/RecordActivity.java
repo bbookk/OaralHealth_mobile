@@ -39,7 +39,7 @@ import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 public class RecordActivity extends AppCompatActivity implements RecognitionListener {
     private static final String KWS_SEARCH = "wakeup";
     private static final String KEYPHRASE = "start";
-    private static final String DIGITS_SEARCH = "digits";
+    private static final String COMMAND_SEARCH = "commands";
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
@@ -62,7 +62,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         helper = new DbHelper(this);
         captions = new HashMap<String, Integer>();
         captions.put(KWS_SEARCH, R.string.kws_caption);
-        captions.put(DIGITS_SEARCH, R.string.digits_caption);
+        captions.put(COMMAND_SEARCH, R.string.digits_caption);
         setContentView(R.layout.activity_record);
         int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
@@ -282,7 +282,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     ((TextView) findViewById(R.id.textview1))
                             .setText("Failed to init recognizer " + result);
                 } else {
-                    switchSearch(DIGITS_SEARCH);
+                    switchSearch(COMMAND_SEARCH);
                     TextView text2 = (TextView) findViewById(R.id.textview2);
                     text2.setText("Reach onPostExecute");
                 }
@@ -298,7 +298,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     @Override
     public void onEndOfSpeech() {
         if (!recognizer.getSearchName().equals(KWS_SEARCH))
-            switchSearch(DIGITS_SEARCH);
+            switchSearch(COMMAND_SEARCH);
         TextView text2 = (TextView) findViewById(R.id.textview2);
         text2.setText("Reach onEnd");
     }
@@ -309,10 +309,10 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             return;
 
         String text = hypothesis.getHypstr();
-        if (text.equals(DIGITS_SEARCH)) {
+        if (text.equals(COMMAND_SEARCH)) {
             TextView text2 = (TextView) findViewById(R.id.textview2);
             text2.setText("Reach onPartial");
-            switchSearch(DIGITS_SEARCH);
+            switchSearch(COMMAND_SEARCH);
         } else
             ((TextView) findViewById(R.id.textview1)).setText(text);
     }
@@ -322,31 +322,31 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             ((TextView) findViewById(R.id.textview1)).setText("Result");
-            if (text.equals("zero")) {
+            if (text.equals("ศูนย์")) {
                 myButton[index].setBackgroundResource(R.color.green);
                 index++;
-            } else if (text.equals("one") || text.equals("a")) {
+            } else if (text.equals("หนึ่ง") || text.equals("อัลฟ่า")) {
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
-            } else if (text.equals("two") || text.equals("b")) {
+            } else if (text.equals("สอง") || text.equals("บราโว่")) {
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
-            } else if (text.equals("three") || text.equals("c")) {
+            } else if (text.equals("สาม") || text.equals("ชาร์ลี")) {
                 myButton[index].setBackgroundResource(R.color.yellow);
                 index++;
-            } else if (text.equals("four") || text.equals("d")) {
+            } else if (text.equals("สี่") || text.equals("เดลต้า")) {
                 myButton[index].setBackgroundResource(R.color.orange);
                 index++;
-            } else if (text.equals("five")) {
+            } else if (text.equals("ห้า")) {
                 index++;
-            } else if (text.equals("six")) {
+            } else if (text.equals("หก")) {
                 index++;
-            } else if (text.equals("seven")) {
+            } else if (text.equals("เจ็ด")) {
                 index++;
-            } else if (text.equals("eight") || text.equals("e")) {
+            } else if (text.equals("แปด") || text.equals("เอคโค่")) {
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
-            } else if (text.equals("nine") || text.equals("g")) {
+            } else if (text.equals("เก้า") || text.equals("กอล์ฟ")) {
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
             }
@@ -362,7 +362,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         recognizer.stop();
 
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
-        if (searchName.equals(DIGITS_SEARCH)) {
+        if (searchName.equals(COMMAND_SEARCH)) {
             TextView text2 = (TextView) findViewById(R.id.textview2);
             text2.setText("Reach switch");
             playVoice();
@@ -375,15 +375,15 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
     @Override
     public void onTimeout() {
-        switchSearch(DIGITS_SEARCH);
+        switchSearch(COMMAND_SEARCH);
     }
 
     private void setupRecognizer(File assetsDir) throws IOException {
         // The recognizer can be configured to perform multiple searches
         // of different kind and switch between them
         recognizer = SpeechRecognizerSetup.defaultSetup()
-                .setAcousticModel(new File(assetsDir, "en-us"))
-                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                .setAcousticModel(new File(assetsDir, "command"))
+                .setDictionary(new File(assetsDir, "database.dic"))
 
                 .setRawLogDir(assetsDir)
 
@@ -392,8 +392,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
 //            recognizer.addKeyphraseSearch(KWS_SEARCH,KEYPHRASE);
 
-        File digitsGrammar = new File(assetsDir, "digits.gram");
-        recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
+        File digitsGrammar = new File(assetsDir, "database.gram");
+        recognizer.addGrammarSearch(COMMAND_SEARCH, digitsGrammar);
 
     }
 

@@ -39,36 +39,41 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
+            <state relative-caret-position="0">
               <caret line="34" column="47" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="34" selection-end-column="47" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RecordActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RecordActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/RecordActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="117">
-              <caret line="133" column="48" lean-forward="true" selection-start-line="133" selection-start-column="48" selection-end-line="133" selection-end-column="48" />
+            <state relative-caret-position="280">
+              <caret line="169" column="41" lean-forward="false" selection-start-line="169" selection-start-column="41" selection-end-line="169" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2199#2219#0" expanded="true" />
-                <element signature="e#2258#2281#0" expanded="true" />
-                <element signature="e#2814#2959#0" expanded="true" />
-                <element signature="e#2958#2959#0" expanded="true" />
-                <element signature="e#3055#3317#0" expanded="true" />
-                <element signature="e#3316#3317#0" expanded="true" />
-                <element signature="e#3413#3674#0" expanded="true" />
-                <element signature="e#3673#3674#0" expanded="true" />
-                <element signature="e#3767#4021#0" expanded="true" />
-                <element signature="e#4020#4021#0" expanded="true" />
-                <element signature="e#4294#4302#0" expanded="true" />
-                <element signature="e#4766#5517#0" expanded="true" />
-                <element signature="e#5516#5517#0" expanded="true" />
-                <element signature="e#9097#10286#0" expanded="true" />
-                <element signature="e#10285#10286#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="database.gram" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/database.gram">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="116">
+              <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="assets.lst" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/assets.lst">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="14" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -76,21 +81,11 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="169" column="98" lean-forward="false" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="98" />
+            <state relative-caret-position="39">
+              <caret line="179" column="0" lean-forward="false" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DbHelper.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/DbHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="68" column="167" lean-forward="false" selection-start-line="67" selection-start-column="8" selection-end-line="68" selection-end-column="167" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -101,7 +96,7 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1445">
+            <state relative-caret-position="-653">
               <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
               <folding />
             </state>
@@ -129,7 +124,7 @@
   <component name="GradleLocalSettings">
     <option name="myGradleHomes">
       <map>
-        <entry key="$PROJECT_DIR$" value="C:\Users\Asus\.gradle\wrapper\dists\gradle-4.1-all\bzyivzo6n839fup2jbap0tjew\gradle-4.1" />
+        <entry key="$PROJECT_DIR$" value="C:\Users\PP37879\.gradle\wrapper\dists\gradle-4.1-all\bzyivzo6n839fup2jbap0tjew\gradle-4.1" />
       </map>
     </option>
     <option name="myGradleVersions">
@@ -2065,7 +2060,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/DbHelper.java" />
+        <option value="$PROJECT_DIR$/app/src/main/assets/sync/assets.lst" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/RecordActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/assets/sync/database.gram" />
       </list>
     </option>
   </component>
@@ -2090,6 +2087,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2098,27 +2099,47 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidBuildScriptsGroupNode" />
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="OralHealth" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sync" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/MySQLSQLLiteSync/MySQLSQLLiteSync/Android/MySQLSQLLiteSync" />
-    <property name="device.picker.selection" value="ce0517156cc5970a03" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="device.picker.selection" value="988a1b314e5244554c" />
     <property name="android.profiler.active" value="true" />
     <property name="settings.editor.selected.configurable" value="instant.run" />
+    <property name="android.project.structure.last.selected" value="pocketsphinx-android-5prealpha-release" />
+    <property name="android.project.structure.proportion" value="0.15" />
   </component>
   <component name="RecentsManager">
     <key name="android.template.packageName">
       <recent name="com.example.asus.oralhealth" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\app\src\main\assets\sync\command" />
+      <recent name="C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\app\src\main\assets\sync" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -2204,7 +2225,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519031524729" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519035405256" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2252,7 +2273,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519031524729" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519035405256" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2284,6 +2305,27 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
       <method />
     </configuration>
     <configuration default="true" type="JarApplication" factoryName="JAR Application">
@@ -2414,7 +2456,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519031524730" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1519035405257" />
       </method>
     </configuration>
     <list size="1">
@@ -2465,7 +2507,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928944" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -2476,10 +2518,11 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14334472" sideWeight="0.5060514" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41808873" sideWeight="0.49394855" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41808873" sideWeight="0.49394855" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32764506" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20307167" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
@@ -2497,7 +2540,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32935154" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -2509,65 +2551,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/Analyze2Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="8" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1598">
-          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_analyze2.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6715">
-          <caret line="395" column="51" lean-forward="false" selection-start-line="395" selection-start-column="51" selection-end-line="395" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/Analyze2Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="952">
-          <caret line="56" column="11" lean-forward="false" selection-start-line="56" selection-start-column="11" selection-end-line="56" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/AppController.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/CaptchaImageView.java" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_analyze2.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="403" column="48" lean-forward="false" selection-start-line="403" selection-start-column="48" selection-end-line="403" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/Analyze2Activity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="8" lean-forward="false" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/Captcha.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/MathCaptcha.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/TextCaptcha.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/SignupActivity.java">
@@ -2642,13 +2625,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/ListViewActivity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/test2Activity.java" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/Student.java" />
-    <entry file="jar://$USER_HOME$/AppData/Local/Android/android-sdk/platforms/android-26/android.jar!/android/database/sqlite/SQLiteDatabase.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="325" column="0" lean-forward="false" selection-start-line="325" selection-start-column="0" selection-end-line="325" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://$USER_HOME$/AppData/Local/Android/android-sdk/platforms/android-26/android.jar!/android/database/sqlite/SQLiteDatabase.class" />
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="692">
@@ -2672,9 +2649,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="78">
           <caret line="41" column="12" lean-forward="false" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="49" />
-          <folding>
-            <marker date="1518968958370" expanded="true" signature="2633:2646" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
       <provider editor-type-id="android-manifest">
@@ -2754,7 +2729,7 @@
         <state relative-caret-position="1955">
           <caret line="137" column="13" lean-forward="false" selection-start-line="103" selection-start-column="8" selection-end-line="137" selection-end-column="13" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -2764,19 +2739,8 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
+        <state relative-caret-position="0">
           <caret line="34" column="47" lean-forward="false" selection-start-line="31" selection-start-column="4" selection-end-line="34" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml">
-      <provider editor-type-id="android-designer2">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1445">
-          <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -2791,18 +2755,101 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_record.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-653">
+          <caret line="85" column="0" lean-forward="false" selection-start-line="85" selection-start-column="0" selection-end-line="85" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/DbHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="68" column="167" lean-forward="false" selection-start-line="67" selection-start-column="8" selection-end-line="68" selection-end-column="167" />
+        <state relative-caret-position="-740">
+          <caret line="13" column="64" lean-forward="true" selection-start-line="13" selection-start-column="64" selection-end-line="13" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/en-us/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/cmudict.vp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/cmudict.symbols">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-972">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/cmudict.dict">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1973765">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/cmudict.phones">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-207">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/database.dic">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="31">
+          <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/command/feat.params">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/database.phone">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/assets.lst">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="14" lean-forward="false" selection-start-line="9" selection-start-column="14" selection-end-line="9" selection-end-column="14" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="169" column="98" lean-forward="false" selection-start-line="169" selection-start-column="14" selection-end-line="169" selection-end-column="98" />
+        <state relative-caret-position="39">
+          <caret line="179" column="0" lean-forward="false" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -2811,26 +2858,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/asus/oralhealth/RecordActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="133" column="48" lean-forward="true" selection-start-line="133" selection-start-column="48" selection-end-line="133" selection-end-column="48" />
+        <state relative-caret-position="280">
+          <caret line="169" column="41" lean-forward="false" selection-start-line="169" selection-start-column="41" selection-end-line="169" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2199#2219#0" expanded="true" />
-            <element signature="e#2258#2281#0" expanded="true" />
-            <element signature="e#2814#2959#0" expanded="true" />
-            <element signature="e#2958#2959#0" expanded="true" />
-            <element signature="e#3055#3317#0" expanded="true" />
-            <element signature="e#3316#3317#0" expanded="true" />
-            <element signature="e#3413#3674#0" expanded="true" />
-            <element signature="e#3673#3674#0" expanded="true" />
-            <element signature="e#3767#4021#0" expanded="true" />
-            <element signature="e#4020#4021#0" expanded="true" />
-            <element signature="e#4294#4302#0" expanded="true" />
-            <element signature="e#4766#5517#0" expanded="true" />
-            <element signature="e#5516#5517#0" expanded="true" />
-            <element signature="e#9097#10286#0" expanded="true" />
-            <element signature="e#10285#10286#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/assets/sync/database.gram">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="9" column="19" lean-forward="true" selection-start-line="9" selection-start-column="19" selection-end-line="9" selection-end-column="19" />
+          <folding />
         </state>
       </provider>
     </entry>
