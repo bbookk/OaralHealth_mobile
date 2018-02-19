@@ -3,26 +3,33 @@ package com.example.asus.oralhealth;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.HashMap;
+
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
@@ -38,18 +45,21 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
     Spinner go;
-    TextView showPtid,showPtName;
+    TextView showPtid, showPtName;
     MediaPlayer player;
     int index = 0;
-    int playlistIndex=8;
-    boolean check=true;
+    int playlistIndex = 8;
+    boolean check = true;
     LinearLayout row1, row2;
+    DbHelper helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 //        index = 0;
 //        check = true;
 //        playlistIndex = 8;
         super.onCreate(savedInstanceState);
+        helper = new DbHelper(this);
         captions = new HashMap<String, Integer>();
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(DIGITS_SEARCH, R.string.digits_caption);
@@ -97,29 +107,78 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 }
             }
         });
-        go = (Spinner) findViewById(R.id.go);
-        ArrayAdapter<CharSequence> adapter =
-                ArrayAdapter.createFromResource(this,
-                        R.array.testPTid, R.layout.spinner_style);
-        adapter.setDropDownViewResource(R.layout.dropdown_style);
-        go.setAdapter(adapter);
 
-        showPtid = (TextView)findViewById(R.id.showpatientId);
-        showPtName = (TextView)findViewById(R.id.showpatientName);
-        showPtName.setText("กชกร นาระหัด");
-        ImageButton goBtn = (ImageButton)findViewById(R.id.goBtn);
-        showPtid.setText(go.getSelectedItem().toString());
-        goBtn.setOnClickListener(new View.OnClickListener() {
+        showPtid = (TextView) findViewById(R.id.showpatientId);
+        showPtName = (TextView) findViewById(R.id.showpatientName);
+        //Creating the instance of ArrayAdapter containing list of language names
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, R.layout.select_dialog, helper.getAllUsers());
+        //Getting the instance of AutoCompleteTextView
+        AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
+        actv.setThreshold(1);//will start working from first character
+        actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
+        actv.setTextColor(Color.BLUE);
+
+        actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
-            public void onClick(View view) {
-                showPtid.setText(go.getSelectedItem().toString());
+            public void onItemClick(AdapterView<?> parent, View arg1, int position, long arg3) {
+
+                String selectedItem = (String) parent.getItemAtPosition(position);
+                try {
+                    int num = Integer.parseInt(selectedItem);
+                    getData(selectedItem);
+//                    Toast.makeText(RecordActivity.this, "number", Toast.LENGTH_SHORT).show();
+                } catch (NumberFormatException e) {
+//                    Toast.makeText(RecordActivity.this, "not number", Toast.LENGTH_SHORT).show();
+                    getIDfromName(selectedItem);
+                }
+
+//                getData(selectedItem);
             }
         });
         createButton();
     }
 
-    public void createButton(){
-      row1 = (LinearLayout) findViewById(R.id.row1);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void getData(String id) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.STD_ID + " ='" + id + "'", null);
+        while (c.moveToNext()) {
+                int std_id = c.getInt(0);
+                String name = c.getString(1);
+                showPtid.setText(String.valueOf(std_id));
+                showPtName.setText(name);
+        }
+        //close the cursor
+        c.close();
+        //close the database
+        db.close();
+    }
+
+    private void getIDfromName(String stdName) {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.NAME + " ='" + stdName + "'", null);
+        while (c.moveToNext()) {
+            int std_id = c.getInt(0);
+            String name = c.getString(1);
+            showPtid.setText(String.valueOf(std_id));
+            showPtName.setText(name);
+        }
+        //close the cursor
+        c.close();
+        //close the database
+        db.close();
+    }
+
+    public void createButton() {
+        row1 = (LinearLayout) findViewById(R.id.row1);
         row2 = (LinearLayout) findViewById(R.id.row2);
         for (int y = 0; y < 8; y++) {
             myButton[y] = new Button(this);
@@ -174,12 +233,11 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                         myButton[count].setBackgroundResource(R.color.red);
                     } else if (buttonColor.getColor() == Color.RED) {
                         myButton[count].setBackgroundResource(R.color.yellow);
-                    }else if (buttonColor.getColor() == Color.rgb(255, 255, 0)) {
+                    } else if (buttonColor.getColor() == Color.rgb(255, 255, 0)) {
                         myButton[count].setBackgroundResource(R.color.orange);
-                    }
-                    else if (buttonColor.getColor() == Color.rgb(255, 153, 0)) {
+                    } else if (buttonColor.getColor() == Color.rgb(255, 153, 0)) {
                         myButton[count].setBackgroundResource(R.color.bg);
-                    }else if (buttonColor.getColor() == Color.rgb(255, 255, 230)) {
+                    } else if (buttonColor.getColor() == Color.rgb(255, 255, 230)) {
                         myButton[count].setBackgroundResource(R.color.white);
                     }
                 }
@@ -187,15 +245,15 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         }
     }
 
-    public void playVoice(){
-        if(playlistIndex == 0){
+    public void playVoice() {
+        if (playlistIndex == 0) {
             check = false;
         }
-        if(check){
+        if (check) {
             player = new MediaPlayer();
-            String fileName = "sound1"+ playlistIndex;
-            int id = getResources().getIdentifier(fileName,"raw",getPackageName());
-            player = MediaPlayer.create(this,id);
+            String fileName = "sound1" + playlistIndex;
+            int id = getResources().getIdentifier(fileName, "raw", getPackageName());
+            player = MediaPlayer.create(this, id);
             player.setLooping(false);
             player.start();
             playlistIndex--;
@@ -225,7 +283,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                             .setText("Failed to init recognizer " + result);
                 } else {
                     switchSearch(DIGITS_SEARCH);
-                    TextView text2 = (TextView)findViewById(R.id.textview2);
+                    TextView text2 = (TextView) findViewById(R.id.textview2);
                     text2.setText("Reach onPostExecute");
                 }
             }
@@ -241,7 +299,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     public void onEndOfSpeech() {
         if (!recognizer.getSearchName().equals(KWS_SEARCH))
             switchSearch(DIGITS_SEARCH);
-        TextView text2 = (TextView)findViewById(R.id.textview2);
+        TextView text2 = (TextView) findViewById(R.id.textview2);
         text2.setText("Reach onEnd");
     }
 
@@ -251,50 +309,50 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             return;
 
         String text = hypothesis.getHypstr();
-        if (text.equals(DIGITS_SEARCH)){
-            TextView text2 = (TextView)findViewById(R.id.textview2);
+        if (text.equals(DIGITS_SEARCH)) {
+            TextView text2 = (TextView) findViewById(R.id.textview2);
             text2.setText("Reach onPartial");
             switchSearch(DIGITS_SEARCH);
-        }
-        else
+        } else
             ((TextView) findViewById(R.id.textview1)).setText(text);
     }
 
     @Override
     public void onResult(Hypothesis hypothesis) {
-        if(hypothesis != null){
+        if (hypothesis != null) {
             String text = hypothesis.getHypstr();
             ((TextView) findViewById(R.id.textview1)).setText("Result");
-            if(text.equals("zero")){
+            if (text.equals("zero")) {
                 myButton[index].setBackgroundResource(R.color.green);
                 index++;
-            }else if(text.equals("one") || text.equals("a")){
+            } else if (text.equals("one") || text.equals("a")) {
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
-            }else if(text.equals("two")|| text.equals("b")){
+            } else if (text.equals("two") || text.equals("b")) {
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
-            }else if(text.equals("three") || text.equals("c")){
+            } else if (text.equals("three") || text.equals("c")) {
                 myButton[index].setBackgroundResource(R.color.yellow);
                 index++;
-            }else if(text.equals("four") || text.equals("d")){
+            } else if (text.equals("four") || text.equals("d")) {
                 myButton[index].setBackgroundResource(R.color.orange);
                 index++;
-            }else if(text.equals("five")){
+            } else if (text.equals("five")) {
                 index++;
-            }else if(text.equals("six")){
+            } else if (text.equals("six")) {
                 index++;
-            }else if(text.equals("seven")){
+            } else if (text.equals("seven")) {
                 index++;
-            }else if(text.equals("eight") || text.equals("e")){
+            } else if (text.equals("eight") || text.equals("e")) {
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
-            }else if(text.equals("nine") || text.equals("g")){
+            } else if (text.equals("nine") || text.equals("g")) {
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
             }
         }
     }
+
     @Override
     public void onError(Exception e) {
     }
@@ -304,8 +362,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         recognizer.stop();
 
         // If we are not spotting, start listening with timeout (10000 ms or 10 seconds).
-        if (searchName.equals(DIGITS_SEARCH)){
-            TextView text2 = (TextView)findViewById(R.id.textview2);
+        if (searchName.equals(DIGITS_SEARCH)) {
+            TextView text2 = (TextView) findViewById(R.id.textview2);
             text2.setText("Reach switch");
             playVoice();
             recognizer.startListening(searchName);
@@ -338,6 +396,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String[] permissions, int[] grantResults) {

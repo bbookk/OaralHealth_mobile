@@ -68,7 +68,7 @@
         android:text="Record Data"
         android:textAlignment="center"
         android:textColor="@color/colorPrimary"
-        android:textSize="30dp"
+        android:textSize="28sp"
         android:textStyle="bold" />
 
     <TextView
@@ -77,81 +77,71 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="@string/kws_caption" />
+
     <TextView
         android:id="@+id/textview2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/space"
-            android:text="Go to Patient ID : "
+            android:text="Search : "
             android:textColor="@color/black"
             android:textSize="@dimen/fontSize_signup"
             android:textStyle="bold" />
 
-        <Spinner
-            android:id="@+id/go"
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="@dimen/fontSize_signup">
+            android:textSize="@dimen/fontSize_signup"
+            android:hint="enter name or ID to record"
+            android:imeOptions="flagNoExtractUi"
+            android:text="">
 
-        </Spinner>
+            <requestFocus />
+        </AutoCompleteTextView>
 
-        <ImageButton
-            android:id="@+id/goBtn"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:src="@drawable/go"
-            android:textSize="@dimen/fontSize_signup" />
+            android:padding="@dimen/space"
+            android:text="Patient : "
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSize_signup"
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/showpatientId"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="end">
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/space_margin"
+            android:padding="@dimen/space"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSize_signup"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/space"
-                android:text="Patient ID : "
-                android:textColor="@color/black"
-                android:textSize="@dimen/fontSize_signup"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/showpatientId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/space_margin"
-                android:padding="@dimen/space"
-                android:textColor="@color/black"
-                android:textSize="@dimen/fontSize_signup"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/showpatientName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="@dimen/space_margin"
-                android:padding="@dimen/space"
-                android:textColor="@color/black"
-                android:textSize="@dimen/fontSize_signup"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/showpatientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/space_margin"
+            android:padding="@dimen/space"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSize_signup"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout

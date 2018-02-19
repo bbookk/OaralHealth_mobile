@@ -202,5 +202,4 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = (TextView) findViewById(R.id.txtView);
         tv.setText(builder);
     }
-
 }

@@ -45,11 +45,12 @@ public class DbHelper extends SQLiteOpenHelper {
         List<String> userlist=new ArrayList<>();
         //get readable database
         SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor=db.rawQuery("SELECT "+STD_ID+" FROM "+TABLE_NAME,null);
+        Cursor cursor=db.rawQuery("SELECT "+STD_ID+", "+NAME+" FROM "+TABLE_NAME,null);
         if(cursor.moveToFirst())
         {
             do {
                 userlist.add(cursor.getString(0));
+                userlist.add(cursor.getString(1));
             }while (cursor.moveToNext());
         }
         //close the cursor
@@ -57,6 +58,27 @@ public class DbHelper extends SQLiteOpenHelper {
         //close the database
         db.close();
         return userlist;
+    }
+
+    // Getting All Contacts
+    public List<String> getDataFromSearch(String id, String name)
+    {
+        List<String> list=new ArrayList<>();
+        //get readable database
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.STD_ID + " ='" + id + "'"+", "+ DbHelper.NAME + " ='" + name + "'", null);
+        if(c.moveToFirst())
+        {
+            do {
+                list.add(c.getString(0));
+                list.add(c.getString(1));
+            }while (c.moveToNext());
+        }
+        //close the cursor
+        c.close();
+        //close the database
+        db.close();
+        return list;
     }
 
 }
