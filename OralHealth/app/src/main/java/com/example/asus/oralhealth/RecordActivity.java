@@ -44,7 +44,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
-    Spinner go;
+    public String result;
     TextView showPtid, showPtName;
     MediaPlayer player;
     int index = 0;
@@ -323,30 +323,74 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             String text = hypothesis.getHypstr();
             ((TextView) findViewById(R.id.textview1)).setText("Result");
             if (text.equals("ศูนย์")) {
+                result = "0";
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.green);
                 index++;
             } else if (text.equals("หนึ่ง") || text.equals("อัลฟ่า")) {
+                if(text.equals("หนึ่ง")){
+                    result = "1";
+                }else if(text.equals("อัลฟ่า")){
+                    result = "A";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
             } else if (text.equals("สอง") || text.equals("บราโว่")) {
+                if(text.equals("สอง")){
+                    result = "2";
+                }else if(text.equals("บราโว่")){
+                    result = "B";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.red);
                 index++;
             } else if (text.equals("สาม") || text.equals("ชาร์ลี")) {
+                if(text.equals("สาม")){
+                    result = "3";
+                }else if(text.equals("ชาร์สี")){
+                    result = "C";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.yellow);
                 index++;
             } else if (text.equals("สี่") || text.equals("เดลต้า")) {
+                if(text.equals("สี่")){
+                    result = "4";
+                }else if(text.equals("เดลต้า")){
+                    result = "D";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.orange);
                 index++;
             } else if (text.equals("ห้า")) {
+                result = "5";
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("หก")) {
+                result = "6";
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("เจ็ด")) {
+                result = "7";
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("แปด") || text.equals("เอคโค่")) {
+                if(text.equals("แปด")){
+                    result = "8";
+                }else if(text.equals("เอคโค่")){
+                    result = "E";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
             } else if (text.equals("เก้า") || text.equals("กอล์ฟ")) {
+                if(text.equals("เก้า")){
+                    result = "9";
+                }else if(text.equals("กอล์ฟ")){
+                    result = "G";
+                }
+//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.bg);
                 index++;
             }
