@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            JSON_URL = "http://192.168.1.2/OralHealth_project/getData.php";
+            JSON_URL = "http://192.168.1.6/OralHealth_project/getData.php";
         }
 
         @Override
@@ -140,14 +140,6 @@ public class MainActivity extends AppCompatActivity {
                         } finally {
                             helper.close();
                         }
-//                        LinearLayout linearLayout = new LinearLayout(MainActivity.this);
-//                        setContentView(linearLayout);
-//                        linearLayout.setOrientation(LinearLayout.VERTICAL);
-//                        for (int i = 0; i < jsonArr.length(); i++) {
-//                            TextView textView = new TextView(MainActivity.this);
-//                            textView.setText(id[count]);
-//                            linearLayout.addView(textView);
-//                        }
                         count++;
 
                     }

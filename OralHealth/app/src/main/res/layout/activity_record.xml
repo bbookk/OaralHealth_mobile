@@ -103,14 +103,20 @@
             android:id="@+id/autoCompleteTextView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="@dimen/fontSize_signup"
             android:hint="enter name or ID to record"
             android:imeOptions="flagNoExtractUi"
-            android:text="">
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSize_signup">
 
             <requestFocus />
         </AutoCompleteTextView>
+
+        <Button
+            android:id="@+id/okBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -167,17 +173,26 @@
         </LinearLayout>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/allBtn"
+        <!--<Button
+            android:id="@+id/allBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@color/blacklight"
+            android:padding="10dp"
+            android:text="@string/good"
+            android:textColor="@color/black"
+            android:textSize="@dimen/fontSize_signup"
+            android:textStyle="bold" />-->
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/blacklight"
-        android:padding="10dp"
-        android:text="@string/good"
-        android:textColor="@color/black"
-        android:textSize="@dimen/fontSize_signup"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/testView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </ScrollView>
+
 
 </LinearLayout>

@@ -11,11 +11,20 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "oralHealth.db";
+    private static final String DATABASE_NAME = "oralHealth_project.db";
     private static final int DATABASE_VERSION = 2;
     public static final String TABLE_NAME = "student";
     public static final String STD_ID = "studentID";
     public static final String NAME = "studentName";
+    public static final String TABLE_NAME_RESULT = "result";
+    public static final String TEETH_11 = "teeth_11";
+    public static final String TEETH_12 = "teeth_12";
+    public static final String TEETH_13 = "teeth_13";
+    public static final String TEETH_14 = "teeth_14";
+    public static final String TEETH_15 = "teeth_15";
+    public static final String TEETH_16 = "teeth_16";
+    public static final String TEETH_17 = "teeth_17";
+    public static final String TEETH_18 = "teeth_18";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -28,6 +37,21 @@ public class DbHelper extends SQLiteOpenHelper {
                 NAME + " TEXT NOT NULL );";
         db.execSQL(sqlCmd);
 
+        String resultTable ="CREATE TABLE " + TABLE_NAME_RESULT+ " ("+
+                STD_ID + " INTEGER PRIMARY KEY, "+
+                NAME + " TEXT NOT NULL, " +
+                TEETH_11 + " TEXT NOT NULL, "+
+                TEETH_12 + " TEXT NOT NULL, "+
+                TEETH_13 + " TEXT NOT NULL, "+
+                TEETH_14 + " TEXT NOT NULL, "+
+                TEETH_15 + " TEXT NOT NULL, "+
+                TEETH_16 + " TEXT NOT NULL, "+
+                TEETH_17 + " TEXT NOT NULL, "+
+                TEETH_18 + " TEXT "+
+                ");";
+        db.execSQL(resultTable);
+
+
         Log.d(TAG, "Database tables created");
     }
 
@@ -35,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RESULT);
         // Create tables again
         onCreate(db);
     }
@@ -60,25 +84,5 @@ public class DbHelper extends SQLiteOpenHelper {
         return userlist;
     }
 
-    // Getting All Contacts
-    public List<String> getDataFromSearch(String id, String name)
-    {
-        List<String> list=new ArrayList<>();
-        //get readable database
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.STD_ID + " ='" + id + "'"+", "+ DbHelper.NAME + " ='" + name + "'", null);
-        if(c.moveToFirst())
-        {
-            do {
-                list.add(c.getString(0));
-                list.add(c.getString(1));
-            }while (c.moveToNext());
-        }
-        //close the cursor
-        c.close();
-        //close the database
-        db.close();
-        return list;
-    }
 
 }

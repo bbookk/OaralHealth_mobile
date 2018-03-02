@@ -1,11 +1,11 @@
 package com.example.asus.oralhealth;
 
 import android.Manifest;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -22,9 +22,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +47,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
-    public String result;
+    public String[] result = new String[32];
     TextView showPtid, showPtName;
     MediaPlayer player;
     int index = 0;
@@ -52,24 +55,19 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     boolean check = true;
     LinearLayout row1, row2;
     DbHelper helper;
+    String std_id;
+    String name;
+    Button okBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        index = 0;
-//        check = true;
-//        playlistIndex = 8;
         super.onCreate(savedInstanceState);
         helper = new DbHelper(this);
         captions = new HashMap<String, Integer>();
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(COMMAND_SEARCH, R.string.digits_caption);
         setContentView(R.layout.activity_record);
-        int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_RECORD_AUDIO);
-            return;
-        }
-        runRecognizerSetup();
+
 
         TextView back = (TextView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -98,15 +96,22 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 startActivity(i);
             }
         });
-        Button good = (Button) findViewById(R.id.allBtn);
-        good.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int i = 0; i < 32; i++) {
-                    myButton[i].setBackgroundResource(R.color.green);
-                }
-            }
-        });
+//        Button good = (Button) findViewById(R.id.allBtn);
+//        good.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                for (int i = 0; i < 32; i++) {
+//                    myButton[i].setBackgroundResource(R.color.green);
+//                }
+//            }
+//        });
+
+        try {
+            Cursor cursor = getAllNotes();
+            showNotes(cursor);
+        } finally { //close connection with DB
+            helper.close();
+        }
 
         showPtid = (TextView) findViewById(R.id.showpatientId);
         showPtName = (TextView) findViewById(R.id.showpatientName);
@@ -138,6 +143,19 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             }
         });
         createButton();
+        okBtn = (Button) findViewById(R.id.okBtn);
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                okBtn.setEnabled(false);
+                int permissionCheck = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.RECORD_AUDIO);
+                if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(RecordActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSIONS_REQUEST_RECORD_AUDIO);
+                    return;
+                }
+                runRecognizerSetup();
+            }
+        });
     }
 
     @Override
@@ -151,10 +169,10 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.STD_ID + " ='" + id + "'", null);
         while (c.moveToNext()) {
-                int std_id = c.getInt(0);
-                String name = c.getString(1);
-                showPtid.setText(String.valueOf(std_id));
-                showPtName.setText(name);
+            std_id = c.getString(0);
+            name = c.getString(1);
+            showPtid.setText(std_id);
+            showPtName.setText(name);
         }
         //close the cursor
         c.close();
@@ -166,9 +184,9 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.NAME + " ='" + stdName + "'", null);
         while (c.moveToNext()) {
-            int std_id = c.getInt(0);
-            String name = c.getString(1);
-            showPtid.setText(String.valueOf(std_id));
+            std_id = c.getString(0);
+            name = c.getString(1);
+            showPtid.setText(std_id);
             showPtName.setText(name);
         }
         //close the cursor
@@ -321,80 +339,145 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     public void onResult(Hypothesis hypothesis) {
         if (hypothesis != null) {
             String text = hypothesis.getHypstr();
+            String teeth_no = myButton[index].getText().toString();
             ((TextView) findViewById(R.id.textview1)).setText("Result");
             if (text.equals("ศูนย์")) {
-                result = "0";
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
+                result[index] = "0";
                 myButton[index].setBackgroundResource(R.color.green);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("หนึ่ง") || text.equals("อัลฟ่า")) {
-                if(text.equals("หนึ่ง")){
-                    result = "1";
-                }else if(text.equals("อัลฟ่า")){
-                    result = "A";
+                if (text.equals("หนึ่ง")) {
+                    result[index] = "1";
+                } else if (text.equals("อัลฟ่า")) {
+                    result[index] = "A";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.red);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("สอง") || text.equals("บราโว่")) {
-                if(text.equals("สอง")){
-                    result = "2";
-                }else if(text.equals("บราโว่")){
-                    result = "B";
+                if (text.equals("สอง")) {
+                    result[index] = "2";
+                } else if (text.equals("บราโว่")) {
+                    result[index] = "B";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.red);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("สาม") || text.equals("ชาร์ลี")) {
-                if(text.equals("สาม")){
-                    result = "3";
-                }else if(text.equals("ชาร์สี")){
-                    result = "C";
+                if (text.equals("สาม")) {
+                    result[index] = "3";
+                } else if (text.equals("ชาร์สี")) {
+                    result[index] = "C";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.yellow);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("สี่") || text.equals("เดลต้า")) {
-                if(text.equals("สี่")){
-                    result = "4";
-                }else if(text.equals("เดลต้า")){
-                    result = "D";
+                if (text.equals("สี่")) {
+                    result[index] = "4";
+                } else if (text.equals("เดลต้า")) {
+                    result[index] = "D";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.orange);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("ห้า")) {
-                result = "5";
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
+                result[index] = "5";
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("หก")) {
-                result = "6";
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
+                result[index] = "6";
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("เจ็ด")) {
-                result = "7";
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
+                result[index] = "7";
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("แปด") || text.equals("เอคโค่")) {
-                if(text.equals("แปด")){
-                    result = "8";
-                }else if(text.equals("เอคโค่")){
-                    result = "E";
+                if (text.equals("แปด")) {
+                    result[index] = "8";
+                } else if (text.equals("เอคโค่")) {
+                    result[index] = "E";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.bg);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             } else if (text.equals("เก้า") || text.equals("กอล์ฟ")) {
-                if(text.equals("เก้า")){
-                    result = "9";
-                }else if(text.equals("กอล์ฟ")){
-                    result = "G";
+                if (text.equals("เก้า")) {
+                    result[index] = "9";
+                } else if (text.equals("กอล์ฟ")) {
+                    result[index] = "G";
                 }
-//                Toast.makeText(RecordActivity.this, result, Toast.LENGTH_SHORT).show();
                 myButton[index].setBackgroundResource(R.color.bg);
+                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
                 index++;
             }
+
         }
+    }
+
+    private void addData(String id, String name, String status1, String status2, String status3,
+                         String status4, String status5, String status6, String status7, String status8) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DbHelper.STD_ID, id);
+        values.put(DbHelper.NAME, name);
+        values.put(DbHelper.TEETH_11, status1);
+        values.put(DbHelper.TEETH_12, status2);
+        values.put(DbHelper.TEETH_13, status3);
+        values.put(DbHelper.TEETH_14, status4);
+        values.put(DbHelper.TEETH_15, status5);
+        values.put(DbHelper.TEETH_16, status6);
+        values.put(DbHelper.TEETH_17, status7);
+        values.put(DbHelper.TEETH_18, status8);
+
+        helper.getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME_RESULT + " WHERE " + DbHelper.STD_ID + " ='" + id + "'", null);
+        if (c.moveToFirst()) {
+//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
+            db.update(DbHelper.TABLE_NAME_RESULT, values, DbHelper.STD_ID + " = " + id, null);
+            db.close();
+        } else {
+            // Inserting record
+            db.insertOrThrow(DbHelper.TABLE_NAME_RESULT, null, values);
+            db.close();
+        }
+    }
+
+
+    private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME, DbHelper.TEETH_11, DbHelper.TEETH_12
+            , DbHelper.TEETH_13, DbHelper.TEETH_14, DbHelper.TEETH_15, DbHelper.TEETH_16
+            , DbHelper.TEETH_17, DbHelper.TEETH_18};
+    private static String ORDER_BY = DbHelper.STD_ID + " DESC";
+
+    private Cursor getAllNotes() {
+        SQLiteDatabase db = helper.getReadableDatabase();
+        Cursor cursor = db.query(DbHelper.TABLE_NAME_RESULT, COLUMNS, null, null, null, null, ORDER_BY);
+        startManagingCursor(cursor);
+        return cursor;
+    }
+
+    private void showNotes(Cursor cursor) {
+        StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
+
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(0); //read column 0 _ID
+            String content = cursor.getString(1); // Read Colum 2 CONTENT
+            String[] status = new String[8];
+            for (int i = 0; i < 8; i++) {
+                status[i] = cursor.getString(i + 2);
+            }
+            builder.append("ลำดับ ").append(id).append(": ");
+            builder.append("\t").append(content);
+            for (int j = 0; j < 8; j++) {
+                builder.append("\t").append(status[j]);
+            }
+        }
+
+        TextView tv = (TextView) findViewById(R.id.testView);
+        tv.setText(builder);
     }
 
     @Override
