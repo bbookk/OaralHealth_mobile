@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
     JSONObject jsonObj;
     JSONArray jsonArr;
     TextView json;
+    RecordActivity recordActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         helper = new DbHelper(this);
+        recordActivity = new RecordActivity();
         new CountDownTimer(2000, 500) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            JSON_URL = "http://192.168.1.6/OralHealth_project/getData.php";
+            JSON_URL = "http://192.168.1.3/OralHealth_project/getData.php";
         }
 
         @Override
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         studentName[count] = jo.getString("studentName");
 
                         try {
-                            addNote(id[count], studentName[count]);
+                            helper.addName(id[count], studentName[count]);
                             Cursor cursor = getAllNotes();
                             showNotes(cursor);
                         } finally {
@@ -150,25 +152,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void addNote(String id, String str) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.STD_ID, id);
-        values.put(DbHelper.NAME, str);
-        helper.getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME + " WHERE " + DbHelper.STD_ID + " ='" + id + "'", null);
-        if (c.moveToFirst()) {
-//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
-            db.update(DbHelper.TABLE_NAME, values,  DbHelper.STD_ID  + " = " + id, null);
-            db.close();
-        } else {
-            // Inserting record
-            db.insertOrThrow(DbHelper.TABLE_NAME, null, values);
-            db.close();
-        }
-
-    }
 
     private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME};
     private static String ORDER_BY = DbHelper.STD_ID + " DESC";

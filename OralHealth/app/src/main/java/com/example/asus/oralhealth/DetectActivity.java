@@ -38,7 +38,7 @@ public class DetectActivity extends AppCompatActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(DetectActivity.this, MenuActivity.class);
+                Intent i = new Intent(DetectActivity.this, AnalyzeActivity.class);
                 startActivity(i);
             }
         });

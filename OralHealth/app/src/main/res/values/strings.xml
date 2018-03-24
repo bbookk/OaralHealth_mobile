@@ -19,7 +19,7 @@
     </string>
     <string name="signup">No account yet? <b>Sign up here.</b></string>
     <string name="record">Record Data</string>
-    <string name="view">View and Analyze Data</string>
+    <string name="view">View Analyze Data</string>
     <string name="analyze">Analyze Data</string>
     <string name="export">Export Data</string>
     <string name="exportPDF">Export Report PDF</string>

@@ -1,7 +1,7 @@
 package com.example.asus.oralhealth;
 
 import android.Manifest;
-import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -9,11 +9,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -25,13 +28,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
@@ -44,10 +70,10 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private static final String KEYPHRASE = "start";
     private static final String COMMAND_SEARCH = "commands";
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
+    String ServerURL = "http://192.168.1.3/OralHealth_project/insert_result.php";
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
-    public String[] result = new String[32];
     TextView showPtid, showPtName;
     MediaPlayer player;
     int index = 0;
@@ -55,9 +81,19 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     boolean check = true;
     LinearLayout row1, row2;
     DbHelper helper;
-    String std_id;
-    String name;
+    public String std_id;
+    public String name;
+    String[] result;
     Button okBtn;
+    private static final String TAG = DbHelper.class.getSimpleName();
+    private String JSON_STRING;
+    String json_string;
+    JSONObject jsonObj;
+    JSONArray jsonArr;
+    TextView json;
+    InputStream inputStream;
+    OutputStream outputStream;
+    JSONArray resultSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,15 +113,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             }
         });
 
-        TextView next = (TextView) findViewById(R.id.next);
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-                Intent i = new Intent(RecordActivity.this, SuccessActivity.class);
-                startActivity(i);
-            }
-        });
 
         TextView home = (TextView) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +123,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 startActivity(i);
             }
         });
+
 //        Button good = (Button) findViewById(R.id.allBtn);
 //        good.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -247,16 +275,46 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     ColorDrawable buttonColor = (ColorDrawable) myButton[count].getBackground();
                     if (buttonColor.getColor() == Color.WHITE) {
                         myButton[count].setBackgroundResource(R.color.green);
-                    } else if (buttonColor.getColor() == Color.rgb(102, 255, 51)) {
+                        myButton[count].setText("0");
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("0")) {
+                        myButton[count].setText("A");
+                        myButton[count].setBackgroundResource(R.color.green);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("A")) {
+                        myButton[count].setText("1");
                         myButton[count].setBackgroundResource(R.color.red);
-                    } else if (buttonColor.getColor() == Color.RED) {
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("1")) {
+                        myButton[count].setText("2");
+                        myButton[count].setBackgroundResource(R.color.red);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("2")) {
+                        myButton[count].setText("B");
+                        myButton[count].setBackgroundResource(R.color.red);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("B")) {
+                        myButton[count].setText("C");
+                        myButton[count].setBackgroundResource(R.color.red);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("C")) {
+                        myButton[count].setText("3");
                         myButton[count].setBackgroundResource(R.color.yellow);
-                    } else if (buttonColor.getColor() == Color.rgb(255, 255, 0)) {
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("3")) {
+                        myButton[count].setText("D");
+                        myButton[count].setBackgroundResource(R.color.yellow);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("D")) {
+                        myButton[count].setText("G");
+                        myButton[count].setBackgroundResource(R.color.yellow);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("G")) {
+                        myButton[count].setText("4");
                         myButton[count].setBackgroundResource(R.color.orange);
-                    } else if (buttonColor.getColor() == Color.rgb(255, 153, 0)) {
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("4")) {
+                        myButton[count].setText("E");
+                        myButton[count].setBackgroundResource(R.color.orange);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("E")) {
+                        myButton[count].setText("8");
                         myButton[count].setBackgroundResource(R.color.bg);
-                    } else if (buttonColor.getColor() == Color.rgb(255, 255, 230)) {
-                        myButton[count].setBackgroundResource(R.color.white);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("8")) {
+                        myButton[count].setText("9");
+                        myButton[count].setBackgroundResource(R.color.bg);
+                    } else if (myButton[count].getText().toString().equalsIgnoreCase("9")) {
+                        myButton[count].setText("0");
+                        myButton[count].setBackgroundResource(R.color.green);
                     }
                 }
             });
@@ -337,119 +395,142 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
     @Override
     public void onResult(Hypothesis hypothesis) {
-        if (hypothesis != null) {
+
+        result = new String[32];
+        if (hypothesis != null && index < 32) {
             String text = hypothesis.getHypstr();
             String teeth_no = myButton[index].getText().toString();
             ((TextView) findViewById(R.id.textview1)).setText("Result");
-            if (text.equals("ศูนย์")) {
-                result[index] = "0";
-                myButton[index].setBackgroundResource(R.color.green);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("หนึ่ง") || text.equals("อัลฟ่า")) {
-                if (text.equals("หนึ่ง")) {
+            switch (text) {
+                case "ศูนย์":
+                    result[index] = "0";
+                    myButton[index].setBackgroundResource(R.color.green);
+                    break;
+                case "หนึ่ง":
                     result[index] = "1";
-                } else if (text.equals("อัลฟ่า")) {
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "อัลฟ่า":
                     result[index] = "A";
-                }
-                myButton[index].setBackgroundResource(R.color.red);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("สอง") || text.equals("บราโว่")) {
-                if (text.equals("สอง")) {
+                    myButton[index].setBackgroundResource(R.color.green);
+                    break;
+                case "สอง":
                     result[index] = "2";
-                } else if (text.equals("บราโว่")) {
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "บราโว":
                     result[index] = "B";
-                }
-                myButton[index].setBackgroundResource(R.color.red);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("สาม") || text.equals("ชาร์ลี")) {
-                if (text.equals("สาม")) {
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "สาม":
                     result[index] = "3";
-                } else if (text.equals("ชาร์สี")) {
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
+                case "ชาร์ลี":
                     result[index] = "C";
-                }
-                myButton[index].setBackgroundResource(R.color.yellow);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("สี่") || text.equals("เดลต้า")) {
-                if (text.equals("สี่")) {
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "สี่":
                     result[index] = "4";
-                } else if (text.equals("เดลต้า")) {
+                    myButton[index].setBackgroundResource(R.color.orange);
+                    break;
+                case "เดลต้า":
                     result[index] = "D";
-                }
-                myButton[index].setBackgroundResource(R.color.orange);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("ห้า")) {
-                result[index] = "5";
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("หก")) {
-                result[index] = "6";
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("เจ็ด")) {
-                result[index] = "7";
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("แปด") || text.equals("เอคโค่")) {
-                if (text.equals("แปด")) {
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
+                case "ห้า":
+                    result[index] = "5";
+                    break;
+                case "หก":
+                    result[index] = "6";
+                    break;
+                case "เจ็ด":
+                    result[index] = "7";
+                    break;
+                case "แปด":
                     result[index] = "8";
-                } else if (text.equals("เอคโค่")) {
+                    myButton[index].setBackgroundResource(R.color.bg);
+                    break;
+                case "เอคโค":
                     result[index] = "E";
-                }
-                myButton[index].setBackgroundResource(R.color.bg);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
-            } else if (text.equals("เก้า") || text.equals("กอล์ฟ")) {
-                if (text.equals("เก้า")) {
+                    myButton[index].setBackgroundResource(R.color.orange);
+                    break;
+                case "เก้า":
                     result[index] = "9";
-                } else if (text.equals("กอล์ฟ")) {
+                    myButton[index].setBackgroundResource(R.color.bg);
+                    break;
+                case "ฟอกซ์ทรอต":
+                    result[index] = "F";
+                    break;
+                case "กอล์ฟ":
                     result[index] = "G";
-                }
-                myButton[index].setBackgroundResource(R.color.bg);
-                Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
-                index++;
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
+            }
+//            Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
+            saveResult(result[index]);
+            index++;
+            while (index > 32) {
+                Toast.makeText(RecordActivity.this, "index over 32", Toast.LENGTH_SHORT).show();
+                break;
             }
 
         }
     }
 
-    private void addData(String id, String name, String status1, String status2, String status3,
-                         String status4, String status5, String status6, String status7, String status8) {
-        SQLiteDatabase db = helper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(DbHelper.STD_ID, id);
-        values.put(DbHelper.NAME, name);
-        values.put(DbHelper.TEETH_11, status1);
-        values.put(DbHelper.TEETH_12, status2);
-        values.put(DbHelper.TEETH_13, status3);
-        values.put(DbHelper.TEETH_14, status4);
-        values.put(DbHelper.TEETH_15, status5);
-        values.put(DbHelper.TEETH_16, status6);
-        values.put(DbHelper.TEETH_17, status7);
-        values.put(DbHelper.TEETH_18, status8);
+    int i;
+    public List<String> myList = new ArrayList<String>();
+    String status[];
 
-        helper.getReadableDatabase();
+    private void saveResult(String result) {
+        i = index;
+        status = new String[32];
+        status[i] = result;
+        myList.add(status[i]);
+        myButton[index].setText(myList.get(i));
 
-        Cursor c = db.rawQuery("SELECT * FROM " + DbHelper.TABLE_NAME_RESULT + " WHERE " + DbHelper.STD_ID + " ='" + id + "'", null);
-        if (c.moveToFirst()) {
-//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
-            db.update(DbHelper.TABLE_NAME_RESULT, values, DbHelper.STD_ID + " = " + id, null);
-            db.close();
-        } else {
-            // Inserting record
-            db.insertOrThrow(DbHelper.TABLE_NAME_RESULT, null, values);
-            db.close();
+        if (myList.size() == 32) {
+            addToSQLite();
+
+            TextView next = (TextView) findViewById(R.id.next);
+            next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addToSQLite();
+//                finish();
+                    Intent i = new Intent(RecordActivity.this, SuccessActivity.class);
+                    startActivity(i);
+                }
+            });
         }
+
+        Toast.makeText(RecordActivity.this, i + " " + index + " " + myList.get(i), Toast.LENGTH_SHORT).show();
     }
 
+    private void addToSQLite() {
+        helper.addResult(std_id, name,
+                myButton[0].getText().toString(), myButton[1].getText().toString(), myButton[2].getText().toString(), myButton[3].getText().toString(),
+                myButton[4].getText().toString(), myButton[5].getText().toString(), myButton[6].getText().toString(), myButton[7].getText().toString(),
+                myButton[8].getText().toString(), myButton[9].getText().toString(), myButton[10].getText().toString(), myButton[11].getText().toString(),
+                myButton[12].getText().toString(), myButton[13].getText().toString(), myButton[14].getText().toString(), myButton[15].getText().toString(),
+                myButton[16].getText().toString(), myButton[17].getText().toString(), myButton[18].getText().toString(), myButton[19].getText().toString(),
+                myButton[20].getText().toString(), myButton[21].getText().toString(), myButton[22].getText().toString(), myButton[23].getText().toString(),
+                myButton[24].getText().toString(), myButton[25].getText().toString(), myButton[26].getText().toString(), myButton[27].getText().toString(),
+                myButton[28].getText().toString(), myButton[29].getText().toString(), myButton[30].getText().toString(), myButton[31].getText().toString());
 
-    private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME, DbHelper.TEETH_11, DbHelper.TEETH_12
-            , DbHelper.TEETH_13, DbHelper.TEETH_14, DbHelper.TEETH_15, DbHelper.TEETH_16
-            , DbHelper.TEETH_17, DbHelper.TEETH_18};
+        getResults();
+    }
+
+    private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME,
+            DbHelper.TEETH_11, DbHelper.TEETH_12, DbHelper.TEETH_13, DbHelper.TEETH_14,
+            DbHelper.TEETH_15, DbHelper.TEETH_16, DbHelper.TEETH_17, DbHelper.TEETH_18,
+            DbHelper.TEETH_21, DbHelper.TEETH_22, DbHelper.TEETH_23, DbHelper.TEETH_24,
+            DbHelper.TEETH_25, DbHelper.TEETH_26, DbHelper.TEETH_27, DbHelper.TEETH_28,
+            DbHelper.TEETH_31, DbHelper.TEETH_32, DbHelper.TEETH_33, DbHelper.TEETH_34,
+            DbHelper.TEETH_35, DbHelper.TEETH_36, DbHelper.TEETH_37, DbHelper.TEETH_38,
+            DbHelper.TEETH_41, DbHelper.TEETH_42, DbHelper.TEETH_43, DbHelper.TEETH_44,
+            DbHelper.TEETH_45, DbHelper.TEETH_46, DbHelper.TEETH_47, DbHelper.TEETH_48,};
+
     private static String ORDER_BY = DbHelper.STD_ID + " DESC";
 
     private Cursor getAllNotes() {
@@ -465,19 +546,71 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         while (cursor.moveToNext()) {
             long id = cursor.getLong(0); //read column 0 _ID
             String content = cursor.getString(1); // Read Colum 2 CONTENT
-            String[] status = new String[8];
-            for (int i = 0; i < 8; i++) {
+            String[] status = new String[32];
+            for (int i = 0; i < 32; i++) {
                 status[i] = cursor.getString(i + 2);
             }
             builder.append("ลำดับ ").append(id).append(": ");
             builder.append("\t").append(content);
-            for (int j = 0; j < 8; j++) {
+            for (int j = 0; j < 32; j++) {
                 builder.append("\t").append(status[j]);
             }
+            builder.append("\n");
         }
+//
+//        TextView tv = (TextView) findViewById(R.id.testView);
+//        tv.setText(builder);
+    }
 
+    private JSONArray getResults() {
+        String myPath = this.getDatabasePath("oralHealth_mobile.db").toString();// Set path to your database
+
+        String myTable = DbHelper.TABLE_NAME_RESULT;//Set name of your table
+
+        SQLiteDatabase myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+
+        String searchQuery = "SELECT  * FROM " + myTable;
+        Cursor cursor = myDataBase.rawQuery(searchQuery, null);
+
+        resultSet = new JSONArray();
+
+        cursor.moveToFirst();
+        while (cursor.isAfterLast() == false) {
+
+            int totalColumn = cursor.getColumnCount();
+            JSONObject rowObject = new JSONObject();
+
+            for (int i = 0; i < totalColumn; i++) {
+                if (cursor.getColumnName(i) != null) {
+                    try {
+                        if (cursor.getString(i) != null) {
+
+                            Log.d("TAG_NAME", cursor.getString(i));
+
+                            rowObject.put(cursor.getColumnName(i), cursor.getString(i));
+                        } else {
+                            rowObject.put(cursor.getColumnName(i), "");
+                        }
+                    } catch (Exception e) {
+                        Log.d("TAG_NAME", e.getMessage());
+                    }
+                }
+            }
+            resultSet.put(rowObject);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        try {
+            jsonObj = new JSONObject();
+            jsonObj.put("Students", resultSet);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         TextView tv = (TextView) findViewById(R.id.testView);
-        tv.setText(builder);
+        tv.setText(jsonObj.toString());
+
+        new SendPostRequest().execute();
+        return resultSet;
     }
 
     @Override
@@ -547,4 +680,105 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             recognizer.shutdown();
         }
     }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    class SendPostRequest extends AsyncTask<String, Void, String> {
+
+        protected void onPreExecute() {
+        }
+
+        protected String doInBackground(String... arg0) {
+            try {
+                try {
+                    URL url = new URL(jsonObj.toString());
+                    Toast.makeText(RecordActivity.this, "add to server", Toast.LENGTH_SHORT).show();
+                    JSONObject postDataParams = new JSONObject();
+                    jsonArr = postDataParams.getJSONArray("Students");
+                    int count = 0;
+                    String[] id = new String[jsonArr.length()];
+                    String[] studentName = new String[jsonArr.length()];
+                    String[] teeth = new String[jsonArr.length()];
+
+                    JSONObject jo = jsonArr.getJSONObject(count);
+                    id[count] = jo.getString("studentId");
+                    studentName[count] = jo.getString("studentName");
+                    teeth[count] = jo.getString("teeth_11");
+                    postDataParams.put("id", id[count]);
+                    postDataParams.put("name", studentName[count]);
+                    postDataParams.put("teeth_11", teeth[count]);
+                    Log.d(TAG, "doInBackground: " + postDataParams);
+                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                    httpURLConnection.setDoInput(true);
+                    httpURLConnection.setDoOutput(true);
+                    httpURLConnection.setRequestMethod("POST");
+                    outputStream = httpURLConnection.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+                    bufferedWriter.write(String.valueOf(postDataParams));
+                    bufferedWriter.flush();
+                    int statusCode = httpURLConnection.getResponseCode();
+                    Log.d("this", " The status code is " + statusCode);
+                    if (statusCode == 200) {
+                        inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
+                        String response = convertInputStreamToString(inputStream);
+                        Log.d("this", "The response is " + response);
+                        JSONObject jsonObject = new JSONObject(response);
+                        return response;
+                    } else {
+                        return null;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        if (outputStream != null) {
+                            outputStream.close();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                return new String("Exception: " + e.getMessage());
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+
+        }
+
+        private String convertInputStreamToString(InputStream inputStream) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+            try {
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append('\n');
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return sb.toString();
+        }
+
+    }
+
+
 }
