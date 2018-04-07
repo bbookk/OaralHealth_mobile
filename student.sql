@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 04, 2018 at 09:48 PM
+-- Generation Time: Apr 07, 2018 at 05:00 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `std`
+-- Database: `oralhealth`
 --
 
 -- --------------------------------------------------------
@@ -60,7 +60,16 @@ INSERT INTO `student` (`studentID`, `schoolName`, `schoolAddr`, `studentName`, `
 (1, 'book', '', '', '', '0000-00-00', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '0'),
 (2, 'test', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (3, NULL, NULL, NULL, NULL, 'd', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'd'),
-(4, 's', NULL, NULL, NULL, 's', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 's');
+(4, 's', NULL, NULL, NULL, 's', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 's'),
+(5, 'อนุบาลปทุม', 'ปทุมธานี', 'สุชาดา', 'หญิง', 'Sunday, January 10, ', 'พหลโยธิน', 'ไทย', 'พุทธ', 'สมพงษ์ ', 'มานี', 'มีชีวิตอยู่', 'หย่าร้าง', 'ค้าขาย', 'ค้าขาย', 'สมพงษ์', '0123456789', 'อยุธยา', 'อรุนี', 'มานพ', '5'),
+(6, 'kpsp', 'suphan', 'aran', 'male', 'Friday, February 10,', 'bangkok', 'ไทย', 'คริสต์', 'อลัน', 'อรุณ', 'มีชีวิตอยู่', 'มีชีวิตอยู่', 'ทหาร', 'หมอ', 'อรุณ', '0801237890', 'สมุทรสงคราม', 'อรุนี', 'มานพ', '7'),
+(7, NULL, NULL, 'alice', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(8, NULL, NULL, 'arun', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(9, NULL, NULL, 'สุเทพ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(10, NULL, NULL, 'สุทัตตา', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 'อนุบาลปทุม', 'พหลโยธิน', 'test', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(12, 'อนุบาลปทุม', 'พหลโยธิน', 'book', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(18, NULL, NULL, 'เมธาวี', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -80,7 +89,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `studentID` int(15) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `studentID` int(15) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

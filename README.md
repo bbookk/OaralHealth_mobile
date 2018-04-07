@@ -17,3 +17,4 @@ success
 - detect internet to update data success
 - *bug when delete data in mysql but in sqlite is not delete too.*
 - get data from sqlite in recordActivity success
+- insert data from sqlite to server success

@@ -3,10 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/OralHealth.iml" filepath="$PROJECT_DIR$/OralHealth.iml" />
-      <module fileurl="file://C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\OralHealth.iml" filepath="C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\OralHealth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../PP37879/Desktop/Senior_Project/OralHealth_mobile/OralHealth/OralHealth.iml" filepath="$PROJECT_DIR$/../../../../PP37879/Desktop/Senior_Project/OralHealth_mobile/OralHealth/OralHealth.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/pocketsphinx-android-5prealpha-release/pocketsphinx-android-5prealpha-release.iml" filepath="$PROJECT_DIR$/pocketsphinx-android-5prealpha-release/pocketsphinx-android-5prealpha-release.iml" />
-      <module fileurl="file://C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\pocketsphinx-android-5prealpha-release\pocketsphinx-android-5prealpha-release.iml" filepath="C:\Users\PP37879\Desktop\Senior_Project\OralHealth_mobile\OralHealth\pocketsphinx-android-5prealpha-release\pocketsphinx-android-5prealpha-release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../../../PP37879/Desktop/Senior_Project/OralHealth_mobile/OralHealth/pocketsphinx-android-5prealpha-release/pocketsphinx-android-5prealpha-release.iml" filepath="$PROJECT_DIR$/../../../../PP37879/Desktop/Senior_Project/OralHealth_mobile/OralHealth/pocketsphinx-android-5prealpha-release/pocketsphinx-android-5prealpha-release.iml" />
     </modules>
   </component>
 </project>

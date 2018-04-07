@@ -1,6 +1,7 @@
 package com.example.asus.oralhealth;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,11 +9,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.text.AlphabeticIndex;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -28,12 +31,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -44,17 +45,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +65,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private static final String KEYPHRASE = "start";
     private static final String COMMAND_SEARCH = "commands";
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
-    String ServerURL = "http://192.168.1.3/OralHealth_project/insert_result.php";
+    String ServerURL = "http://192.168.1.8/OralHealth_project/insert_result.php";
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
@@ -85,16 +80,12 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     public String name;
     String[] result;
     Button okBtn;
-    private static final String TAG = DbHelper.class.getSimpleName();
-    private String JSON_STRING;
-    String json_string;
     JSONObject jsonObj;
     JSONArray jsonArr;
     TextView json;
-    InputStream inputStream;
-    OutputStream outputStream;
     JSONArray resultSet;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +94,18 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(COMMAND_SEARCH, R.string.digits_caption);
         setContentView(R.layout.activity_record);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        if (isNetworkAvailable() == true) {
+//            Toast.makeText(MainActivity.this, "Connection", Toast.LENGTH_SHORT).show();
+            saveData();
+        } else {
+            Toast.makeText(RecordActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
+        }
 
 
         TextView back = (TextView) findViewById(R.id.back);
@@ -123,16 +126,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 startActivity(i);
             }
         });
-
-//        Button good = (Button) findViewById(R.id.allBtn);
-//        good.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                for (int i = 0; i < 32; i++) {
-//                    myButton[i].setBackgroundResource(R.color.green);
-//                }
-//            }
-//        });
 
         try {
             Cursor cursor = getAllNotes();
@@ -228,7 +221,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         row2 = (LinearLayout) findViewById(R.id.row2);
         for (int y = 0; y < 8; y++) {
             myButton[y] = new Button(this);
-//            myButton[y].setBackgroundResource(R.color.white);
             myButton[y].setText("" + 1 + (8 - y));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
@@ -238,7 +230,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         }
         for (int y = 0; y < 8; y++) {
             myButton[y + 8] = new Button(this);
-//            myButton[y+8].setBackgroundResource(R.color.white);
             myButton[y + 8].setText("" + 2 + (y + 1));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
@@ -248,7 +239,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         }
         for (int y = 0; y < 8; y++) {
             myButton[y + 16] = new Button(this);
-//            myButton[y+16].setBackgroundResource(R.color.white);
             myButton[y + 16].setText("" + 4 + (8 - y));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
@@ -258,7 +248,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         }
         for (int y = 0; y < 8; y++) {
             myButton[y + 24] = new Button(this);
-//            myButton[y+24].setBackgroundResource(R.color.white);
             myButton[y + 24].setText("" + 3 + (y + 1));
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.weight = 1;
@@ -474,7 +463,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 Toast.makeText(RecordActivity.this, "index over 32", Toast.LENGTH_SHORT).show();
                 break;
             }
-
         }
     }
 
@@ -517,8 +505,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 myButton[20].getText().toString(), myButton[21].getText().toString(), myButton[22].getText().toString(), myButton[23].getText().toString(),
                 myButton[24].getText().toString(), myButton[25].getText().toString(), myButton[26].getText().toString(), myButton[27].getText().toString(),
                 myButton[28].getText().toString(), myButton[29].getText().toString(), myButton[30].getText().toString(), myButton[31].getText().toString());
-
-        getResults();
     }
 
     private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME,
@@ -557,9 +543,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             }
             builder.append("\n");
         }
-//
-//        TextView tv = (TextView) findViewById(R.id.testView);
-//        tv.setText(builder);
     }
 
     private JSONArray getResults() {
@@ -597,6 +580,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 }
             }
             resultSet.put(rowObject);
+
             cursor.moveToNext();
         }
         cursor.close();
@@ -606,10 +590,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        TextView tv = (TextView) findViewById(R.id.testView);
-        tv.setText(jsonObj.toString());
 
-        new SendPostRequest().execute();
+
         return resultSet;
     }
 
@@ -688,97 +670,220 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    class SendPostRequest extends AsyncTask<String, Void, String> {
+    public void saveData() {
 
-        protected void onPreExecute() {
-        }
+        JSONArray result = getResults();
 
-        protected String doInBackground(String... arg0) {
-            try {
-                try {
-                    URL url = new URL(jsonObj.toString());
-                    Toast.makeText(RecordActivity.this, "add to server", Toast.LENGTH_SHORT).show();
-                    JSONObject postDataParams = new JSONObject();
-                    jsonArr = postDataParams.getJSONArray("Students");
-                    int count = 0;
-                    String[] id = new String[jsonArr.length()];
-                    String[] studentName = new String[jsonArr.length()];
-                    String[] teeth = new String[jsonArr.length()];
+        String id[] = new String[result.length()];
+        String name[] = new String[result.length()];
+        String teeth_11[] = new String[result.length()];
+        String teeth_12[] = new String[result.length()];
+        String teeth_13[] = new String[result.length()];
+        String teeth_14[] = new String[result.length()];
+        String teeth_15[] = new String[result.length()];
+        String teeth_16[] = new String[result.length()];
+        String teeth_17[] = new String[result.length()];
+        String teeth_18[] = new String[result.length()];
+        String teeth_21[] = new String[result.length()];
+        String teeth_22[] = new String[result.length()];
+        String teeth_23[] = new String[result.length()];
+        String teeth_24[] = new String[result.length()];
+        String teeth_25[] = new String[result.length()];
+        String teeth_26[] = new String[result.length()];
+        String teeth_27[] = new String[result.length()];
+        String teeth_28[] = new String[result.length()];
+        String teeth_31[] = new String[result.length()];
+        String teeth_32[] = new String[result.length()];
+        String teeth_33[] = new String[result.length()];
+        String teeth_34[] = new String[result.length()];
+        String teeth_35[] = new String[result.length()];
+        String teeth_36[] = new String[result.length()];
+        String teeth_37[] = new String[result.length()];
+        String teeth_38[] = new String[result.length()];
+        String teeth_41[] = new String[result.length()];
+        String teeth_42[] = new String[result.length()];
+        String teeth_43[] = new String[result.length()];
+        String teeth_44[] = new String[result.length()];
+        String teeth_45[] = new String[result.length()];
+        String teeth_46[] = new String[result.length()];
+        String teeth_47[] = new String[result.length()];
+        String teeth_48[] = new String[result.length()];
 
-                    JSONObject jo = jsonArr.getJSONObject(count);
-                    id[count] = jo.getString("studentId");
-                    studentName[count] = jo.getString("studentName");
-                    teeth[count] = jo.getString("teeth_11");
-                    postDataParams.put("id", id[count]);
-                    postDataParams.put("name", studentName[count]);
-                    postDataParams.put("teeth_11", teeth[count]);
-                    Log.d(TAG, "doInBackground: " + postDataParams);
-                    HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                    httpURLConnection.setDoInput(true);
-                    httpURLConnection.setDoOutput(true);
-                    httpURLConnection.setRequestMethod("POST");
-                    outputStream = httpURLConnection.getOutputStream();
-                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
-                    bufferedWriter.write(String.valueOf(postDataParams));
-                    bufferedWriter.flush();
-                    int statusCode = httpURLConnection.getResponseCode();
-                    Log.d("this", " The status code is " + statusCode);
-                    if (statusCode == 200) {
-                        inputStream = new BufferedInputStream(httpURLConnection.getInputStream());
-                        String response = convertInputStreamToString(inputStream);
-                        Log.d("this", "The response is " + response);
-                        JSONObject jsonObject = new JSONObject(response);
-                        return response;
-                    } else {
-                        return null;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (inputStream != null) {
-                            inputStream.close();
-                        }
-                        if (outputStream != null) {
-                            outputStream.close();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            } catch (Exception e) {
-                return new String("Exception: " + e.getMessage());
+
+        try {
+            for (int i = 0; i < result.length(); i++) {
+                id[i] = result.getJSONObject(i).getString("studentID");
+                name[i] = result.getJSONObject(i).getString("studentName");
+                teeth_11[i] = result.getJSONObject(i).getString("teeth_11");
+                teeth_12[i] = result.getJSONObject(i).getString("teeth_12");
+                teeth_13[i] = result.getJSONObject(i).getString("teeth_13");
+                teeth_14[i] = result.getJSONObject(i).getString("teeth_14");
+                teeth_15[i] = result.getJSONObject(i).getString("teeth_15");
+                teeth_16[i] = result.getJSONObject(i).getString("teeth_16");
+                teeth_17[i] = result.getJSONObject(i).getString("teeth_17");
+                teeth_18[i] = result.getJSONObject(i).getString("teeth_18");
+                teeth_21[i] = result.getJSONObject(i).getString("teeth_21");
+                teeth_22[i] = result.getJSONObject(i).getString("teeth_22");
+                teeth_23[i] = result.getJSONObject(i).getString("teeth_23");
+                teeth_24[i] = result.getJSONObject(i).getString("teeth_24");
+                teeth_25[i] = result.getJSONObject(i).getString("teeth_25");
+                teeth_26[i] = result.getJSONObject(i).getString("teeth_26");
+                teeth_27[i] = result.getJSONObject(i).getString("teeth_27");
+                teeth_28[i] = result.getJSONObject(i).getString("teeth_28");
+                teeth_31[i] = result.getJSONObject(i).getString("teeth_31");
+                teeth_32[i] = result.getJSONObject(i).getString("teeth_32");
+                teeth_33[i] = result.getJSONObject(i).getString("teeth_33");
+                teeth_34[i] = result.getJSONObject(i).getString("teeth_34");
+                teeth_35[i] = result.getJSONObject(i).getString("teeth_35");
+                teeth_36[i] = result.getJSONObject(i).getString("teeth_36");
+                teeth_37[i] = result.getJSONObject(i).getString("teeth_37");
+                teeth_38[i] = result.getJSONObject(i).getString("teeth_38");
+                teeth_41[i] = result.getJSONObject(i).getString("teeth_41");
+                teeth_42[i] = result.getJSONObject(i).getString("teeth_42");
+                teeth_43[i] = result.getJSONObject(i).getString("teeth_43");
+                teeth_44[i] = result.getJSONObject(i).getString("teeth_44");
+                teeth_45[i] = result.getJSONObject(i).getString("teeth_45");
+                teeth_46[i] = result.getJSONObject(i).getString("teeth_46");
+                teeth_47[i] = result.getJSONObject(i).getString("teeth_47");
+                teeth_48[i] = result.getJSONObject(i).getString("teeth_48");
             }
-            return null;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-
-        @Override
-        protected void onPostExecute(String result) {
-
+        for (int i = 0; i < result.length(); i++) {
+            InsertData(id[i], name[i], teeth_11[i], teeth_12[i], teeth_13[i], teeth_14[i],
+                    teeth_15[i], teeth_16[i], teeth_17[i], teeth_18[i],
+                    teeth_21[i], teeth_22[i], teeth_23[i], teeth_24[i],
+                    teeth_25[i], teeth_26[i], teeth_27[i], teeth_28[i],
+                    teeth_31[i], teeth_32[i], teeth_33[i], teeth_34[i],
+                    teeth_35[i], teeth_36[i], teeth_37[i], teeth_38[i],
+                    teeth_41[i], teeth_42[i], teeth_43[i], teeth_44[i],
+                    teeth_45[i], teeth_46[i], teeth_47[i], teeth_48[i]);
         }
-
-        private String convertInputStreamToString(InputStream inputStream) {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append('\n');
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return sb.toString();
-        }
-
     }
 
+    public void InsertData(final String id, final String name,
+                           final String teeth_11, final String teeth_12, final String teeth_13, final String teeth_14,
+                           final String teeth_15, final String teeth_16, final String teeth_17, final String teeth_18,
+                           final String teeth_21, final String teeth_22, final String teeth_23, final String teeth_24,
+                           final String teeth_25, final String teeth_26, final String teeth_27, final String teeth_28,
+                           final String teeth_31, final String teeth_32, final String teeth_33, final String teeth_34,
+                           final String teeth_35, final String teeth_36, final String teeth_37, final String teeth_38,
+                           final String teeth_41, final String teeth_42, final String teeth_43, final String teeth_44,
+                           final String teeth_45, final String teeth_46, final String teeth_47, final String teeth_48) {
 
+        class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
+
+            @Override
+            protected String doInBackground(String... params) {
+
+                String idHolder = id;
+                String NameHolder = name;
+                String teeth_11Holder = teeth_11;
+                String teeth_12Holder = teeth_12;
+                String teeth_13Holder = teeth_13;
+                String teeth_14Holder = teeth_14;
+                String teeth_15Holder = teeth_15;
+                String teeth_16Holder = teeth_16;
+                String teeth_17Holder = teeth_17;
+                String teeth_18Holder = teeth_18;
+                String teeth_21Holder = teeth_21;
+                String teeth_22Holder = teeth_22;
+                String teeth_23Holder = teeth_23;
+                String teeth_24Holder = teeth_24;
+                String teeth_25Holder = teeth_25;
+                String teeth_26Holder = teeth_26;
+                String teeth_27Holder = teeth_27;
+                String teeth_28Holder = teeth_28;
+                String teeth_31Holder = teeth_31;
+                String teeth_32Holder = teeth_32;
+                String teeth_33Holder = teeth_33;
+                String teeth_34Holder = teeth_34;
+                String teeth_35Holder = teeth_35;
+                String teeth_36Holder = teeth_36;
+                String teeth_37Holder = teeth_37;
+                String teeth_38Holder = teeth_38;
+                String teeth_41Holder = teeth_41;
+                String teeth_42Holder = teeth_42;
+                String teeth_43Holder = teeth_43;
+                String teeth_44Holder = teeth_44;
+                String teeth_45Holder = teeth_45;
+                String teeth_46Holder = teeth_46;
+                String teeth_47Holder = teeth_47;
+                String teeth_48Holder = teeth_48;
+
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+                nameValuePairs.add(new BasicNameValuePair("std_id", idHolder));
+                nameValuePairs.add(new BasicNameValuePair("studentName", NameHolder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_11", teeth_11Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_12", teeth_12Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_13", teeth_13Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_14", teeth_14Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_15", teeth_15Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_16", teeth_16Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_17", teeth_17Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_18", teeth_18Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_21", teeth_21Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_22", teeth_22Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_23", teeth_23Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_24", teeth_24Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_25", teeth_25Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_26", teeth_26Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_27", teeth_27Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_28", teeth_28Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_31", teeth_31Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_32", teeth_32Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_33", teeth_33Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_34", teeth_34Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_35", teeth_35Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_36", teeth_36Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_37", teeth_37Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_38", teeth_38Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_41", teeth_41Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_42", teeth_42Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_43", teeth_43Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_44", teeth_44Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_45", teeth_45Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_46", teeth_46Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_47", teeth_47Holder));
+                nameValuePairs.add(new BasicNameValuePair("teeth_48", teeth_48Holder));
+
+
+                try {
+                    HttpClient httpClient = new DefaultHttpClient();
+
+                    HttpPost httpPost = new HttpPost(ServerURL);
+
+                    httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+
+//                    TextView tv = (TextView) findViewById(R.id.testView);
+//                    tv.setText(nameValuePairs.toString());
+                    HttpResponse httpResponse = httpClient.execute(httpPost);
+
+                    HttpEntity httpEntity = httpResponse.getEntity();
+
+                } catch (ClientProtocolException e) {
+
+                } catch (IOException e) {
+
+                }
+                return "Data Inserted Successfully";
+            }
+
+            @Override
+            protected void onPostExecute(String result) {
+
+                super.onPostExecute(result);
+
+                Toast.makeText(RecordActivity.this, "Data Submit Successfully", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+        SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
+
+        sendPostReqAsyncTask.execute(id, name, teeth_11);
+
+    }
 }

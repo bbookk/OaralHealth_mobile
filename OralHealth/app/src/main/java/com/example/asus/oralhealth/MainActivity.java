@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            JSON_URL = "http://192.168.1.3/OralHealth_project/getData.php";
+            JSON_URL = "http://192.168.1.8/OralHealth_project/getData.php";
         }
 
         @Override
