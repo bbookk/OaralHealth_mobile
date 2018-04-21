@@ -22,7 +22,7 @@ public class DetectActivity extends AppCompatActivity {
         });
 
         TextView txt = (TextView) findViewById(R.id.txtView);
-        String username = "Hello "+getIntent().getStringExtra("username");
+        String username = "Hello "+getIntent().getStringExtra("den_username");
         txt.setText(username);
 
         Button record = (Button) findViewById(R.id.record);

@@ -65,7 +65,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     private static final String KEYPHRASE = "start";
     private static final String COMMAND_SEARCH = "commands";
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
-    String ServerURL = "http://192.168.1.8/OralHealth_project/insert_result.php";
+    String ServerURL = "https://oralhealthstatuscheck.com/insert_result.php";
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
     private Button myButton[] = new Button[32];
@@ -857,8 +857,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
-//                    TextView tv = (TextView) findViewById(R.id.testView);
-//                    tv.setText(nameValuePairs.toString());
+                    TextView tv = (TextView) findViewById(R.id.testView);
+                    tv.setText(nameValuePairs.toString());
                     HttpResponse httpResponse = httpClient.execute(httpPost);
 
                     HttpEntity httpEntity = httpResponse.getEntity();
