@@ -374,7 +374,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
     EditText Username, Password;
-    Button LogIn,signUp ;
+    Button LogIn;
     String Password_Holder, Username_Holder;
     String finalResult ;
     String HttpURL = "https://oralhealthstatuscheck.com/loginMobile.php";
@@ -392,7 +392,14 @@ public class LoginActivity extends AppCompatActivity {
         Username = (EditText)findViewById(R.id.username);
         Password = (EditText)findViewById(R.id.password);
         LogIn = (Button)findViewById(R.id.signinBtn);
-        signUp = (Button)findViewById(R.id.signupBtn);
+        TextView signUp = (TextView)findViewById(R.id.signup);
+        signUp.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(i);
+            }
+        });
         LogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
