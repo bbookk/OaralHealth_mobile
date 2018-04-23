@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DetectActivity extends AppCompatActivity {
-
+    String dent_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +26,14 @@ public class DetectActivity extends AppCompatActivity {
         String username = "Hello "+getIntent().getStringExtra("den_username");
         txt.setText(username);
 
+        dent_name = getIntent().getStringExtra("den_username");
+
         Button record = (Button) findViewById(R.id.record);
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(DetectActivity.this, RecordActivity.class);
+                i.putExtra("dentist_name", dent_name);
                 startActivity(i);
             }
         });

@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.text.AlphabeticIndex;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -19,6 +18,7 @@ import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,7 +34,6 @@ import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -45,12 +44,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -78,11 +76,11 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     DbHelper helper;
     public String std_id;
     public String name;
+    public String today_dt;
+    public String dent_name;
     String[] result;
     Button okBtn;
     JSONObject jsonObj;
-    JSONArray jsonArr;
-    TextView json;
     JSONArray resultSet;
 
     @SuppressLint("NewApi")
@@ -94,6 +92,10 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(COMMAND_SEARCH, R.string.digits_caption);
         setContentView(R.layout.activity_record);
+
+        today_dt = getCurrentDate();
+        dent_name = getIntent().getStringExtra("dentist_name");
+        Toast.makeText(RecordActivity.this, dent_name, Toast.LENGTH_SHORT).show();
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -123,13 +125,14 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             public void onClick(View view) {
                 finish();
                 Intent i = new Intent(RecordActivity.this, DetectActivity.class);
+                i.putExtra("den_username", dent_name);
                 startActivity(i);
             }
         });
 
         try {
             Cursor cursor = getAllNotes();
-            showNotes(cursor);
+//            showNotes(cursor);
         } finally { //close connection with DB
             helper.close();
         }
@@ -504,7 +507,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 myButton[16].getText().toString(), myButton[17].getText().toString(), myButton[18].getText().toString(), myButton[19].getText().toString(),
                 myButton[20].getText().toString(), myButton[21].getText().toString(), myButton[22].getText().toString(), myButton[23].getText().toString(),
                 myButton[24].getText().toString(), myButton[25].getText().toString(), myButton[26].getText().toString(), myButton[27].getText().toString(),
-                myButton[28].getText().toString(), myButton[29].getText().toString(), myButton[30].getText().toString(), myButton[31].getText().toString());
+                myButton[28].getText().toString(), myButton[29].getText().toString(), myButton[30].getText().toString(), myButton[31].getText().toString(),today_dt,dent_name);
     }
 
     private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME,
@@ -515,7 +518,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             DbHelper.TEETH_31, DbHelper.TEETH_32, DbHelper.TEETH_33, DbHelper.TEETH_34,
             DbHelper.TEETH_35, DbHelper.TEETH_36, DbHelper.TEETH_37, DbHelper.TEETH_38,
             DbHelper.TEETH_41, DbHelper.TEETH_42, DbHelper.TEETH_43, DbHelper.TEETH_44,
-            DbHelper.TEETH_45, DbHelper.TEETH_46, DbHelper.TEETH_47, DbHelper.TEETH_48,};
+            DbHelper.TEETH_45, DbHelper.TEETH_46, DbHelper.TEETH_47, DbHelper.TEETH_48, DbHelper.RECORD_DATE, DbHelper.DENTIST_NAME};
 
     private static String ORDER_BY = DbHelper.STD_ID + " DESC";
 
@@ -526,27 +529,27 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         return cursor;
     }
 
-    private void showNotes(Cursor cursor) {
-        StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
-
-        while (cursor.moveToNext()) {
-            long id = cursor.getLong(0); //read column 0 _ID
-            String content = cursor.getString(1); // Read Colum 2 CONTENT
-            String[] status = new String[32];
-            for (int i = 0; i < 32; i++) {
-                status[i] = cursor.getString(i + 2);
-            }
-            builder.append("ลำดับ ").append(id).append(": ");
-            builder.append("\t").append(content);
-            for (int j = 0; j < 32; j++) {
-                builder.append("\t").append(status[j]);
-            }
-            builder.append("\n");
-        }
-    }
+//    private void showNotes(Cursor cursor) {
+//        StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
+//
+//        while (cursor.moveToNext()) {
+//            long id = cursor.getLong(0); //read column 0 _ID
+//            String content = cursor.getString(1); // Read Colum 2 CONTENT
+//            String[] status = new String[32];
+//            for (int i = 0; i < 32; i++) {
+//                status[i] = cursor.getString(i + 2);
+//            }
+//            builder.append("ลำดับ ").append(id).append(": ");
+//            builder.append("\t").append(content);
+//            for (int j = 0; j < 32; j++) {
+//                builder.append("\t").append(status[j]);
+//            }
+//            builder.append("\n");
+//        }
+//    }
 
     private JSONArray getResults() {
-        String myPath = this.getDatabasePath("oralHealth_mobile.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("oralHealth_app.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_RESULT;//Set name of your table
 
@@ -590,8 +593,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         return resultSet;
     }
 
@@ -708,7 +709,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         String teeth_46[] = new String[result.length()];
         String teeth_47[] = new String[result.length()];
         String teeth_48[] = new String[result.length()];
-
+        String record_dt[] = new String[result.length()];
+        String dent_name[] = new String[result.length()];
 
         try {
             for (int i = 0; i < result.length(); i++) {
@@ -746,6 +748,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 teeth_46[i] = result.getJSONObject(i).getString("teeth_46");
                 teeth_47[i] = result.getJSONObject(i).getString("teeth_47");
                 teeth_48[i] = result.getJSONObject(i).getString("teeth_48");
+                record_dt[i] = result.getJSONObject(i).getString("record_date");
+                dent_name[i] = result.getJSONObject(i).getString("dentist_name");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -758,7 +762,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     teeth_31[i], teeth_32[i], teeth_33[i], teeth_34[i],
                     teeth_35[i], teeth_36[i], teeth_37[i], teeth_38[i],
                     teeth_41[i], teeth_42[i], teeth_43[i], teeth_44[i],
-                    teeth_45[i], teeth_46[i], teeth_47[i], teeth_48[i]);
+                    teeth_45[i], teeth_46[i], teeth_47[i], teeth_48[i], record_dt[i], dent_name[i]);
         }
     }
 
@@ -770,7 +774,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                            final String teeth_31, final String teeth_32, final String teeth_33, final String teeth_34,
                            final String teeth_35, final String teeth_36, final String teeth_37, final String teeth_38,
                            final String teeth_41, final String teeth_42, final String teeth_43, final String teeth_44,
-                           final String teeth_45, final String teeth_46, final String teeth_47, final String teeth_48) {
+                           final String teeth_45, final String teeth_46, final String teeth_47, final String teeth_48, final String record_dt, final String dent_name) {
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -811,6 +815,9 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 String teeth_46Holder = teeth_46;
                 String teeth_47Holder = teeth_47;
                 String teeth_48Holder = teeth_48;
+                String recordDt_Holder = record_dt;
+                String dentName_Holder = dent_name;
+
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
@@ -848,6 +855,8 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 nameValuePairs.add(new BasicNameValuePair("teeth_46", teeth_46Holder));
                 nameValuePairs.add(new BasicNameValuePair("teeth_47", teeth_47Holder));
                 nameValuePairs.add(new BasicNameValuePair("teeth_48", teeth_48Holder));
+                nameValuePairs.add(new BasicNameValuePair("record_date", recordDt_Holder));
+                nameValuePairs.add(new BasicNameValuePair("dentist_name", dentName_Holder));
 
 
                 try {
@@ -886,4 +895,13 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         sendPostReqAsyncTask.execute(id, name, teeth_11);
 
     }
+
+    public String getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("dd-MM-YYYY");
+        String strDate = mdformat.format(calendar.getTime());
+        return strDate;
+    }
+
+
 }

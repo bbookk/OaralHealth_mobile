@@ -35,6 +35,8 @@ $teeth_45 = $_POST["teeth_45"];
 $teeth_46 = $_POST["teeth_46"];
 $teeth_47 = $_POST["teeth_47"];
 $teeth_48 = $_POST["teeth_48"];
+$record_date = $_POST["record_date"];
+$dentist_name = $_POST["dentist_name"];
 
 $conn->set_charset("utf8");
 $sql = "SELECT id FROM result_status WHERE id='$std_id'";
@@ -46,7 +48,7 @@ teeth_25='$teeth_25', teeth_26='$teeth_26', teeth_27='$teeth_27', teeth_28='$tee
 teeth_31='$teeth_31', teeth_32='$teeth_32', teeth_33='$teeth_33', teeth_34='$teeth_34',
 teeth_35='$teeth_35', teeth_36='$teeth_36', teeth_37='$teeth_37', teeth_38='$teeth_38',
 teeth_41='$teeth_41', teeth_42='$teeth_42', teeth_43='$teeth_43', teeth_44='$teeth_44',
-teeth_45='$teeth_45', teeth_46='$teeth_46', teeth_47='$teeth_47', teeth_48='$teeth_48' where id='$std_id'";
+teeth_45='$teeth_45', teeth_46='$teeth_46', teeth_47='$teeth_47', teeth_48='$teeth_48' , record_date='$record_date' , dentist_name='$dentist_name' where id='$std_id'";
 
 $Sql_Query = "insert into result_status(`id`, `name`, 
 `teeth_11`, `teeth_12`, `teeth_13`, `teeth_14`, 
@@ -56,7 +58,7 @@ $Sql_Query = "insert into result_status(`id`, `name`,
 `teeth_31`, `teeth_32`, `teeth_33`, `teeth_34`, 
 `teeth_35`, `teeth_36`, `teeth_37`, `teeth_38`,
 `teeth_41`, `teeth_42`, `teeth_43`, `teeth_44`, 
-`teeth_45`, `teeth_46`, `teeth_47`, `teeth_48`)  
+`teeth_45`, `teeth_46`, `teeth_47`, `teeth_48`, `record_date`, `dentist_name`)  
         values ('".$std_id."','".$std_name."',
         '".$teeth_11."','".$teeth_12."','".$teeth_13."','".$teeth_14."',
         '".$teeth_15."','".$teeth_16."','".$teeth_17."','".$teeth_18."',
@@ -65,7 +67,7 @@ $Sql_Query = "insert into result_status(`id`, `name`,
         '".$teeth_31."','".$teeth_32."','".$teeth_33."','".$teeth_34."',
         '".$teeth_35."','".$teeth_36."','".$teeth_37."','".$teeth_38."',
         '".$teeth_41."','".$teeth_42."','".$teeth_43."','".$teeth_44."',
-        '".$teeth_45."','".$teeth_46."','".$teeth_47."','".$teeth_48."')";
+        '".$teeth_45."','".$teeth_46."','".$teeth_47."','".$teeth_48."','".$record_date."','".$dentist_name."')";
 
         $query = "SELECT * FROM result_status WHERE id='$std_id'";
         $result = mysqli_query($conn,$query);

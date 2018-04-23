@@ -23,11 +23,12 @@ $parent_addr = $data->parent_addr;
 $teacher = $data->teacher;
 $master = $data->master;
 $decay_num = $data->decay_num;
+$age = $data->age;
 
 
 $conn->set_charset("utf8");
-$sql = "INSERT INTO student(`schoolName`, `schoolAddr`, `studentName`, `gender`, `dateOfBirth`, `studentAddr`, `nationality`, `religion`, `dadName`, `momName`, `dadStatus`, `momStatus`, `dadJob`, `momJob`, `parentName`, `parentTel`, `parentAddr`, `teacherName`, `masterName`, `decayNum`)  
-        VALUES ('".$school_name."','".$school_addr."','".$std_name."','".$gender."','".$dateOfBirth."','".$std_addr."','".$nation."','".$religion."','".$dad_name."','".$mom_name."','".$dad_status."','".$mom_status."','".$dad_job."','".$mom_job."','".$parent_name."','".$parent_phone."','".$parent_addr."','".$teacher."','".$master."','".$decay_num."')";
+$sql = "INSERT INTO student(`schoolName`, `schoolAddr`, `studentName`, `gender`, `dateOfBirth`, `studentAddr`, `nationality`, `religion`, `dadName`, `momName`, `dadStatus`, `momStatus`, `dadJob`, `momJob`, `parentName`, `parentTel`, `parentAddr`, `teacherName`, `masterName`, `decayNum`, `age`)  
+        VALUES ('".$school_name."','".$school_addr."','".$std_name."','".$gender."','".$dateOfBirth."','".$std_addr."','".$nation."','".$religion."','".$dad_name."','".$mom_name."','".$dad_status."','".$mom_status."','".$dad_job."','".$mom_job."','".$parent_name."','".$parent_phone."','".$parent_addr."','".$teacher."','".$master."','".$decay_num."','".$age."')";
 
 if ($conn->query($sql) === TRUE) {
     $newdata = array("Error"=>"false", "Message"=>"hi add member","data"=>$data);

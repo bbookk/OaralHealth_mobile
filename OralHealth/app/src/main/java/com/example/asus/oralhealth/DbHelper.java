@@ -16,7 +16,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "oralHealth_mobile.db";
+    private static final String DATABASE_NAME = "oralHealth_app.db";
     private static final int DATABASE_VERSION = 2;
     public static final String TABLE_NAME = "student";
     public static final String STD_ID = "studentID";
@@ -54,6 +54,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TEETH_46 = "teeth_46";
     public static final String TEETH_47 = "teeth_47";
     public static final String TEETH_48 = "teeth_48";
+    public static final String RECORD_DATE = "record_date";
+    public static final String DENTIST_NAME = "dentist_name";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -100,7 +102,9 @@ public class DbHelper extends SQLiteOpenHelper {
                 TEETH_45 + " TEXT , "+
                 TEETH_46 + " TEXT , "+
                 TEETH_47 + " TEXT , "+
-                TEETH_48 + " TEXT "+
+                TEETH_48 + " TEXT , "+
+                RECORD_DATE + " TEXT , "+
+                DENTIST_NAME + " TEXT "+
                 ");";
         db.execSQL(resultTable);
 
@@ -165,7 +169,7 @@ public class DbHelper extends SQLiteOpenHelper {
                           String status17, String status18, String status19, String status20,
                           String status21, String status22, String status23, String status24,
                           String status25, String status26, String status27, String status28,
-                          String status29, String status30, String status31, String status32) {
+                          String status29, String status30, String status31, String status32, String record_dt, String dent_name) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(STD_ID, id);
@@ -202,6 +206,8 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(TEETH_46, status30);
         values.put(TEETH_47, status31);
         values.put(TEETH_48, status32);
+        values.put(RECORD_DATE, record_dt);
+        values.put(DENTIST_NAME, dent_name);
 
         this.getReadableDatabase();
 
@@ -216,31 +222,4 @@ public class DbHelper extends SQLiteOpenHelper {
             db.close();
         }
     }
-
-
-    /**
-     * Compose JSON out of SQLite records
-     * @return
-     */
-    public String composeJSONfromSQLite(){
-        ArrayList<HashMap<String, String>> wordList;
-        wordList = new ArrayList<HashMap<String, String>>();
-        String selectQuery = "SELECT  * FROM "+TABLE_NAME_RESULT;
-        SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst()) {
-            do {
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("userId", cursor.getString(0));
-                map.put("userName", cursor.getString(1));
-                wordList.add(map);
-            } while (cursor.moveToNext());
-        }
-        database.close();
-        Gson gson = new GsonBuilder().create();
-        //Use GSON to serialize Array List to JSON
-        return gson.toJson(wordList);
-    }
-
-
 }
