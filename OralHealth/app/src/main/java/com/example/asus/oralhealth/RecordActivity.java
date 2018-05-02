@@ -18,7 +18,6 @@ import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,6 +114,9 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             @Override
             public void onClick(View view) {
                 finish();
+//                Intent i = new Intent(RecordActivity.this, DetectActivity.class);
+//                i.putExtra("den_username", dent_name);
+//                startActivity(i);
             }
         });
 
@@ -528,25 +530,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         startManagingCursor(cursor);
         return cursor;
     }
-
-//    private void showNotes(Cursor cursor) {
-//        StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
-//
-//        while (cursor.moveToNext()) {
-//            long id = cursor.getLong(0); //read column 0 _ID
-//            String content = cursor.getString(1); // Read Colum 2 CONTENT
-//            String[] status = new String[32];
-//            for (int i = 0; i < 32; i++) {
-//                status[i] = cursor.getString(i + 2);
-//            }
-//            builder.append("ลำดับ ").append(id).append(": ");
-//            builder.append("\t").append(content);
-//            for (int j = 0; j < 32; j++) {
-//                builder.append("\t").append(status[j]);
-//            }
-//            builder.append("\n");
-//        }
-//    }
 
     private JSONArray getResults() {
         String myPath = this.getDatabasePath("oralHealth_app.db").toString();// Set path to your database

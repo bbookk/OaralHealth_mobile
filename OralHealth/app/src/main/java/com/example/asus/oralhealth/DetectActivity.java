@@ -43,6 +43,7 @@ public class DetectActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(DetectActivity.this, AnalyzeActivity.class);
+                i.putExtra("dentist_name", dent_name);
                 startActivity(i);
             }
         });

@@ -4,5 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="left"
     android:textColor="@color/black"
-    android:textSize="@dimen/fontSize_signup"
+    android:textSize="20sp"
+    android:padding="15px"
+    android:layout_margin="5px"
     android:textStyle="bold" />

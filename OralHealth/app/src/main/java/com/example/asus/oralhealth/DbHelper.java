@@ -54,8 +54,14 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TEETH_46 = "teeth_46";
     public static final String TEETH_47 = "teeth_47";
     public static final String TEETH_48 = "teeth_48";
+    public static final String TABLE_NAME_ANALYZE = "analyze_result";
+    public static final String SCHOOL_NAME = "school_name";
+    public static final String CLASSROOM = "classroom";
+    public static final String DMFT = "dmft";
     public static final String RECORD_DATE = "record_date";
     public static final String DENTIST_NAME = "dentist_name";
+    public static final String DENTIST_ID = "dentistID";
+    public static final String GENDER = "gender";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -107,6 +113,18 @@ public class DbHelper extends SQLiteOpenHelper {
                 DENTIST_NAME + " TEXT "+
                 ");";
         db.execSQL(resultTable);
+
+        String analyzeTable ="CREATE TABLE " + TABLE_NAME_ANALYZE+ " ("+
+                RECORD_DATE + " TEXT NOT NULL, "+
+                SCHOOL_NAME + " TEXT NOT NULL, "+
+                CLASSROOM + " TEXT NOT NULL, "+
+                STD_ID + " INTEGER PRIMARY KEY, "+
+                DENTIST_NAME + " TEXT NOT NULL, "+
+                DMFT + " INTEGER NOT NULL, " +
+                NAME + " TEXT NOT NULL, "+
+                GENDER + " TEXT NOT NULL"+
+        ");";
+        db.execSQL(analyzeTable);
 
 
         Log.d(TAG, "Database tables created");
@@ -219,6 +237,60 @@ public class DbHelper extends SQLiteOpenHelper {
         } else {
             // Inserting record
             db.insertOrThrow(TABLE_NAME_RESULT, null, values);
+            db.close();
+        }
+    }
+
+    public List<String> selectAnalyze(String date,String room ,String schoolName)
+    {
+        List<String> analyzelist=new ArrayList<>();
+        //get readable database
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_ANALYZE + " WHERE " + RECORD_DATE + " ='" + date + "'"+ CLASSROOM + " ='" + room + "'"+ SCHOOL_NAME+ " ='" + schoolName + "'", null);
+        if(cursor.moveToFirst())
+        {
+            do {
+                analyzelist.add(cursor.getString(0));
+                analyzelist.add(cursor.getString(1));
+                analyzelist.add(cursor.getString(2));
+                analyzelist.add(cursor.getString(3));
+                analyzelist.add(cursor.getString(4));
+                analyzelist.add(cursor.getString(5));
+                analyzelist.add(cursor.getString(6));
+                analyzelist.add(cursor.getString(7));
+            }while (cursor.moveToNext());
+        }
+        //close the cursor
+        cursor.close();
+        //close the database
+        db.close();
+        return analyzelist;
+    }
+
+    public void addAnalyzeResult(String date, String schoolName,
+                                 String classroom, String studentID, String dentName, String dmft, String studentName, String gender) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(RECORD_DATE, date);
+        values.put(SCHOOL_NAME, schoolName);
+        values.put(CLASSROOM, classroom);
+        values.put(STD_ID, studentID);
+        values.put(DENTIST_NAME, dentName);
+        values.put(DMFT, dmft);
+        values.put(NAME, studentName);
+        values.put(GENDER, gender);
+
+
+        this.getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_ANALYZE + " WHERE " + STD_ID + " ='" + studentID + "'", null);
+        if (c.moveToFirst()) {
+//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
+            db.update(TABLE_NAME_ANALYZE, values, STD_ID + " = " + studentID, null);
+            db.close();
+        } else {
+            // Inserting record
+            db.insertOrThrow(TABLE_NAME_ANALYZE, null, values);
             db.close();
         }
     }
