@@ -400,7 +400,19 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     result[index] = "0";
                     myButton[index].setBackgroundResource(R.color.green);
                     break;
+                case "ซาวน์":
+                    result[index] = "0";
+                    myButton[index].setBackgroundResource(R.color.green);
+                    break;
+                case "ดีหมด":
+                    result[index] = "0";
+                    myButton[index].setBackgroundResource(R.color.green);
+                    break;
                 case "หนึ่ง":
+                    result[index] = "1";
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "ผุ":
                     result[index] = "1";
                     myButton[index].setBackgroundResource(R.color.red);
                     break;
@@ -420,8 +432,16 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     result[index] = "3";
                     myButton[index].setBackgroundResource(R.color.yellow);
                     break;
+                case "อุดไม่ผุ":
+                    result[index] = "3";
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
                 case "ชาร์ลี":
                     result[index] = "C";
+                    myButton[index].setBackgroundResource(R.color.red);
+                    break;
+                case "อุดแล้วผุ":
+                    result[index] = "2";
                     myButton[index].setBackgroundResource(R.color.red);
                     break;
                 case "สี่":
@@ -435,13 +455,26 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 case "ห้า":
                     result[index] = "5";
                     break;
+                case "มิสซิ่ง":
+                    result[index] = "5";
+                    break;
                 case "หก":
+                    result[index] = "6";
+                    break;
+                case "ซีลแลนท์":
                     result[index] = "6";
                     break;
                 case "เจ็ด":
                     result[index] = "7";
                     break;
+                case "คราวน์":
+                    result[index] = "7";
+                    break;
                 case "แปด":
+                    result[index] = "8";
+                    myButton[index].setBackgroundResource(R.color.bg);
+                    break;
+                case "ยังไม่ขึ้น":
                     result[index] = "8";
                     myButton[index].setBackgroundResource(R.color.bg);
                     break;
@@ -459,6 +492,9 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 case "กอล์ฟ":
                     result[index] = "G";
                     myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
+                case "เสร็จ":
+                    finish();
                     break;
             }
 //            Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
@@ -532,7 +568,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     }
 
     private JSONArray getResults() {
-        String myPath = this.getDatabasePath("oralHealth_app.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("oralHealth_mobiles.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_RESULT;//Set name of your table
 

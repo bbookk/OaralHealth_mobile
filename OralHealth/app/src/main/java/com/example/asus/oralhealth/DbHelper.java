@@ -16,7 +16,7 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "oralHealth_app.db";
+    private static final String DATABASE_NAME = "oralHealth_mobiles.db";
     private static final int DATABASE_VERSION = 2;
     public static final String TABLE_NAME = "student";
     public static final String STD_ID = "studentID";

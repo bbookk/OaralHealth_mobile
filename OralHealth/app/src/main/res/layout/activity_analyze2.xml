@@ -113,7 +113,7 @@
     <ScrollView
         android:id="@+id/data_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/main_table"
@@ -124,70 +124,74 @@
             android:shrinkColumns="*"
             android:stretchColumns="*">
 
-            <!--<TableRow-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:gravity="center_horizontal">-->
+            <TableRow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
 
 
-            <!--</TableRow>-->
+            </TableRow>
 
-            <!--<TableRow-->
-                <!--android:id="@+id/tableRow1"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@color/label">-->
+            <TableRow
+                android:id="@+id/tableRow1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/label">
 
-                <!--<TextView-->
-                    <!--android:id="@+id/patient_label"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="20dip"-->
-                    <!--android:text="Pateint ID"-->
-                    <!--android:textColor="#000000" />-->
+                <TextView
+                    android:id="@+id/patient_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="PATIENT ID"
+                    android:textColor="#000000" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/sex_label"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="20dip"-->
-                    <!--android:text="Sex"-->
-                    <!--android:textColor="#000000" />-->
+                <TextView
+                    android:id="@+id/sex_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="GENDER"
+                    android:textColor="#000000" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/name_label"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="20dip"-->
-                    <!--android:text="Name"-->
-                    <!--android:textColor="#000000" />-->
+                <TextView
+                    android:id="@+id/name_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="NAME"
+                    android:textColor="#000000" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/examiner_label"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="20dip"-->
-                    <!--android:text="Examiner"-->
-                    <!--android:textColor="#000000" />-->
+                <TextView
+                    android:id="@+id/examiner_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="EXAMINER"
+                    android:textColor="#000000" />
 
-                <!--<TextView-->
-                    <!--android:id="@+id/risk_label"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:gravity="center"-->
-                    <!--android:padding="20dip"-->
-                    <!--android:text="Risk"-->
-                    <!--android:textColor="#000000" />-->
+                <TextView
+                    android:id="@+id/riskValue_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="RISK"
+                    android:textColor="#000000" />
 
-            <!--</TableRow>-->
+                <TextView
+                    android:id="@+id/risk_label"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="DMFT"
+                    android:textColor="#000000" />
+
+            </TableRow>
         </TableLayout>
     </ScrollView>
-    <ScrollView
+    <TextView
+        android:id="@+id/testView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/testView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </ScrollView>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

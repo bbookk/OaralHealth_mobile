@@ -38,7 +38,7 @@ import java.util.Locale;
 
 import cz.msebera.android.httpclient.extras.Base64;
 
-public class AnalyzeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class AnalyzeActivity extends AppCompatActivity {
 
     DateFormat fmtDateAndTime = DateFormat.getDateTimeInstance();
     Calendar myCalendar = Calendar.getInstance();
@@ -62,16 +62,15 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
         helper = new DbHelper(this);
 
         dent_name = getIntent().getStringExtra("dentist_name");
-        Toast.makeText(AnalyzeActivity.this, dent_name, Toast.LENGTH_SHORT).show();
 
         if (isNetworkAvailable() == true) {
-//            Toast.makeText(MainActivity.this, "Connection", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(AnalyzeActivity.this, "Connection", Toast.LENGTH_SHORT).show();
             new AnalyzeActivity.BackgroundTask().execute();
         } else {
-//            Toast.makeText(MainActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(AnalyzeActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
         }
 
-            room = (Spinner) findViewById(R.id.room);
+        room = (Spinner) findViewById(R.id.room);
         school = (Spinner) findViewById(R.id.school);
 
         TextView back = (TextView) findViewById(R.id.back);
@@ -170,6 +169,7 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void showNotes(Cursor cursor) {
+//        Toast.makeText(AnalyzeActivity.this, "show Note", Toast.LENGTH_SHORT).show();
         StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
 
         while (cursor.moveToNext()) {
@@ -184,18 +184,10 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
 //        tv.setText(builder);
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Spinner spinner = (Spinner) parent;
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
-    private void addToSQLite() {
+    public void addToSQLite() {
+//        Toast.makeText(AnalyzeActivity.this, "add to SQLite", Toast.LENGTH_SHORT).show();
+        classroomList = new ArrayList<String>();
+        schoolList = new ArrayList<String>();
         for(int i = 0; i < jsonArr.length(); i++){
             helper.addAnalyzeResult(date[i], schoolName[i], classroom[i], studentId[i], dentName[i], dmft[i], studentName[i], gender[i]);
             if(classroomList.contains(classroom[i]) == false) {
@@ -215,11 +207,12 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private class BackgroundTask extends AsyncTask<Void, Void, String> {
-        String JSON_URL;
 
+        String JSON_URL;
         @Override
         protected void onPreExecute() {
             JSON_URL = "https://oralhealthstatuscheck.com/getData_analyze.php";
+//            Toast.makeText(AnalyzeActivity.this, "background task", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -252,13 +245,14 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
         protected void onPostExecute(String result) {
             json = (TextView) findViewById(R.id.testView);
 
-//            json.setText(result);
+
             json_string = result;
             if (json_string == null) {
                 Toast.makeText(AnalyzeActivity.this, "Get Json Before.", Toast.LENGTH_SHORT).show();
             } else {
                 try {
                     jsonObj = new JSONObject(json_string);
+                    int count = 0;
                     jsonArr = jsonObj.getJSONArray("analysis_result");
                     studentId = new String[jsonArr.length()];
                     date = new String[jsonArr.length()];
@@ -268,31 +262,29 @@ public class AnalyzeActivity extends AppCompatActivity implements AdapterView.On
                     dmft = new String[jsonArr.length()];
                     studentName = new String[jsonArr.length()];
                     gender = new String[jsonArr.length()];
-                    classroomList = new ArrayList<String>();
-                    schoolList = new ArrayList<String>();
 
-                    int count = 0;
+
 
                     while (count < jsonArr.length()) {
                         JSONObject jo = jsonArr.getJSONObject(count);
-                        studentId[count] = jo.getString("studentID");
+//                        json.setText(jo.toString());
                         date[count] = jo.getString("date");
                         schoolName[count] = jo.getString("schoolName");
                         classroom[count] = jo.getString("classroom");
-                        dentName[count] = jo.getString("dentID");
+                        studentId[count] = jo.getString("studentID");
+                        dentName[count] = jo.getString("dentName");
                         dmft[count] = jo.getString("dmft");
-                        studentName [count] = jo.getString("studentName ");
+                        studentName [count] = jo.getString("studentName");
                         gender[count] = jo.getString("gender");
-//                        json.setText(classroomList.toString());
-
+//                        json.setText(gender[count].toString() );
+//                        addToSQLite();
                         try {
                             Cursor cursor = getAllNotes();
-                            showNotes(cursor);
+//                            showNotes(cursor);
                         } finally {
                             helper.close();
                         }
                         count++;
-
                     }
                     addToSQLite();
                 } catch (JSONException e) {

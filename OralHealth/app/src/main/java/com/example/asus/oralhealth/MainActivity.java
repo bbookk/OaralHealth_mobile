@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             helper.addName(id[count], studentName[count]);
                             Cursor cursor = getAllNotes();
-                            showNotes(cursor);
+//                            showNotes(cursor);
                         } finally {
                             helper.close();
                         }
