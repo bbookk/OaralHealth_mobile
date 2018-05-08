@@ -568,7 +568,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     }
 
     private JSONArray getResults() {
-        String myPath = this.getDatabasePath("oralHealth_mobiles.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("mobile_oralHealth.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_RESULT;//Set name of your table
 

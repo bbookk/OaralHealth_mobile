@@ -44,7 +44,6 @@ public class AnalyzeActivity extends AppCompatActivity {
     Calendar myCalendar = Calendar.getInstance();
     String dateValue, roomValue, schoolValue;
     JSONObject jsonObj;
-    JSONArray resultSet;
     private ArrayList<String> classroomList, schoolList;
     TextView json;
     JSONArray jsonArr;
@@ -60,8 +59,12 @@ public class AnalyzeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_analyze);
         helper = new DbHelper(this);
-
         dent_name = getIntent().getStringExtra("dentist_name");
+        room = (Spinner) findViewById(R.id.room);
+        school = (Spinner) findViewById(R.id.school);
+        classroomList = new ArrayList<String>();
+        schoolList = new ArrayList<String>();
+//        Toast.makeText(AnalyzeActivity.this, dent_name, Toast.LENGTH_SHORT).show();
 
         if (isNetworkAvailable() == true) {
 //            Toast.makeText(AnalyzeActivity.this, "Connection", Toast.LENGTH_SHORT).show();
@@ -70,17 +73,19 @@ public class AnalyzeActivity extends AppCompatActivity {
 //            Toast.makeText(AnalyzeActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
         }
 
-        room = (Spinner) findViewById(R.id.room);
-        school = (Spinner) findViewById(R.id.school);
+        try {
+            Cursor cursor = getAllNotes();
+            addToSpinner(cursor);
+//            showNotes(cursor);
+        } finally {
+            helper.close();
+        }
 
         TextView back = (TextView) findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
-//                Intent i = new Intent(AnalyzeActivity.this, DetectActivity.class);
-//                i.putExtra("den_username", dent_name);
-//                startActivity(i);
             }
         });
 
@@ -169,41 +174,39 @@ public class AnalyzeActivity extends AppCompatActivity {
     }
 
     private void showNotes(Cursor cursor) {
-//        Toast.makeText(AnalyzeActivity.this, "show Note", Toast.LENGTH_SHORT).show();
         StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
 
         while (cursor.moveToNext()) {
-            String date = cursor.getString(0); //read column 0 _ID
-            String schoolName = cursor.getString(1); // Read Colum 2 CONTENT
+            String content = cursor.getString(1);
 
-            builder.append("ลำดับ ").append(date).append(": ");
-            builder.append("\t").append(schoolName).append("\n");
+//            builder.append("ลำดับ ").append(id).append(": ");
+//            builder.append("\t").append(content).append("\n");
         }
 
 //        TextView tv = (TextView) findViewById(R.id.testView);
 //        tv.setText(builder);
     }
 
-    public void addToSQLite() {
-//        Toast.makeText(AnalyzeActivity.this, "add to SQLite", Toast.LENGTH_SHORT).show();
-        classroomList = new ArrayList<String>();
-        schoolList = new ArrayList<String>();
-        for(int i = 0; i < jsonArr.length(); i++){
-            helper.addAnalyzeResult(date[i], schoolName[i], classroom[i], studentId[i], dentName[i], dmft[i], studentName[i], gender[i]);
-            if(classroomList.contains(classroom[i]) == false) {
-                classroomList.add(classroom[i]);
+    private void addToSpinner(Cursor cursor) {
+//        Cursor cursor = getAllNotes();
+        while (cursor.moveToNext()) {
+            String schoolName = cursor.getString(1);
+            String room = cursor.getString(2);
+            if(classroomList.contains(room) == false) {
+                classroomList.add(room);
             }
-            if(schoolList.contains(schoolName[i]) == false) {
-                schoolList.add(schoolName[i]);
+            if(schoolList.contains(schoolName) == false) {
+                schoolList.add(schoolName);
             }
-
         }
         room.setAdapter(new ArrayAdapter<String>(AnalyzeActivity.this,
                 R.layout.spinner_style, classroomList));
 
         school.setAdapter(new ArrayAdapter<String>(AnalyzeActivity.this,
                 R.layout.spinner_style, schoolList));
-
+//
+//        TextView tv = (TextView) findViewById(R.id.testView);
+//        tv.setText(classroomList.toString());
     }
 
     private class BackgroundTask extends AsyncTask<Void, Void, String> {
@@ -245,7 +248,6 @@ public class AnalyzeActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             json = (TextView) findViewById(R.id.testView);
 
-
             json_string = result;
             if (json_string == null) {
                 Toast.makeText(AnalyzeActivity.this, "Get Json Before.", Toast.LENGTH_SHORT).show();
@@ -262,12 +264,9 @@ public class AnalyzeActivity extends AppCompatActivity {
                     dmft = new String[jsonArr.length()];
                     studentName = new String[jsonArr.length()];
                     gender = new String[jsonArr.length()];
-
-
-
                     while (count < jsonArr.length()) {
                         JSONObject jo = jsonArr.getJSONObject(count);
-//                        json.setText(jo.toString());
+
                         date[count] = jo.getString("date");
                         schoolName[count] = jo.getString("schoolName");
                         classroom[count] = jo.getString("classroom");
@@ -276,9 +275,9 @@ public class AnalyzeActivity extends AppCompatActivity {
                         dmft[count] = jo.getString("dmft");
                         studentName [count] = jo.getString("studentName");
                         gender[count] = jo.getString("gender");
-//                        json.setText(gender[count].toString() );
-//                        addToSQLite();
                         try {
+                            helper.addAnalyzeResult(date[count], schoolName[count], classroom[count],
+                                    studentId[count], dentName[count], dmft[count], studentName[count], gender[count]);
                             Cursor cursor = getAllNotes();
 //                            showNotes(cursor);
                         } finally {
@@ -286,7 +285,6 @@ public class AnalyzeActivity extends AppCompatActivity {
                         }
                         count++;
                     }
-                    addToSQLite();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

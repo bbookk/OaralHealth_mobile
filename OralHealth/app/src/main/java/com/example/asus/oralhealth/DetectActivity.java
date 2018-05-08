@@ -15,10 +15,12 @@ public class DetectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect);
         TextView back = (TextView) findViewById(R.id.back);
+        back.setText("Back To Login Again.");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent i = new Intent(DetectActivity.this, LoginActivity.class);
+                startActivity(i);
             }
         });
 

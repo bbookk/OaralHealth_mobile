@@ -6,18 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "oralHealth_mobiles.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "mobile_oralHealth.db";
+    private static final int DATABASE_VERSION = 3;
     public static final String TABLE_NAME = "student";
     public static final String STD_ID = "studentID";
     public static final String NAME = "studentName";
@@ -55,12 +51,19 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String TEETH_47 = "teeth_47";
     public static final String TEETH_48 = "teeth_48";
     public static final String TABLE_NAME_ANALYZE = "analyze_result";
+    public static final String TABLE_NAME_DENTIST = "dentist";
     public static final String SCHOOL_NAME = "school_name";
     public static final String CLASSROOM = "classroom";
     public static final String DMFT = "dmft";
     public static final String RECORD_DATE = "record_date";
     public static final String DENTIST_NAME = "dentist_name";
     public static final String DENTIST_ID = "dentistID";
+    public static final String PASSWORD = "password";
+    public static final String USERNAME = "username";
+    public static final String FIRSTNAME = "firstName";
+    public static final String LASTNAME = "lastName";
+    public static final String EMAIL = "email";
+    public static final String TYPE = "type";
     public static final String GENDER = "gender";
 
     public DbHelper(Context context) {
@@ -114,18 +117,28 @@ public class DbHelper extends SQLiteOpenHelper {
                 ");";
         db.execSQL(resultTable);
 
+
         String analyzeTable ="CREATE TABLE " + TABLE_NAME_ANALYZE+ " ("+
                 RECORD_DATE + " TEXT NOT NULL, "+
                 SCHOOL_NAME + " TEXT NOT NULL, "+
                 CLASSROOM + " TEXT NOT NULL, "+
                 STD_ID + " INTEGER PRIMARY KEY, "+
                 DENTIST_NAME + " TEXT NOT NULL, "+
-                DMFT + " INTEGER NOT NULL, " +
+                DMFT + " INTEGER NOT NULL, "+
                 NAME + " TEXT NOT NULL, "+
-                GENDER + " TEXT NOT NULL"+
-        ");";
+                GENDER + " TEXT NOT NULL );";
         db.execSQL(analyzeTable);
 
+
+        String dentistTable ="CREATE TABLE " + TABLE_NAME_DENTIST+ " ("+
+                DENTIST_ID + " INTEGER PRIMARY KEY, "+
+                USERNAME + " TEXT NOT NULL, "+
+                PASSWORD + " TEXT NOT NULL, "+
+                FIRSTNAME + " TEXT NOT NULL, "+
+                LASTNAME + " TEXT NOT NULL, "+
+                EMAIL + " TEXT NOT NULL, "+
+                TYPE + " TEXT NOT NULL );";
+        db.execSQL(dentistTable);
 
         Log.d(TAG, "Database tables created");
     }
@@ -135,6 +148,8 @@ public class DbHelper extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_RESULT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_ANALYZE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME_DENTIST);
         // Create tables again
         onCreate(db);
     }
@@ -241,32 +256,6 @@ public class DbHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<String> selectAnalyze(String date,String room ,String schoolName)
-    {
-        List<String> analyzelist=new ArrayList<>();
-        //get readable database
-        SQLiteDatabase db=this.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NAME_ANALYZE + " WHERE " + RECORD_DATE + " ='" + date + "'"+ CLASSROOM + " ='" + room + "'"+ SCHOOL_NAME+ " ='" + schoolName + "'", null);
-        if(cursor.moveToFirst())
-        {
-            do {
-                analyzelist.add(cursor.getString(0));
-                analyzelist.add(cursor.getString(1));
-                analyzelist.add(cursor.getString(2));
-                analyzelist.add(cursor.getString(3));
-                analyzelist.add(cursor.getString(4));
-                analyzelist.add(cursor.getString(5));
-                analyzelist.add(cursor.getString(6));
-                analyzelist.add(cursor.getString(7));
-            }while (cursor.moveToNext());
-        }
-        //close the cursor
-        cursor.close();
-        //close the database
-        db.close();
-        return analyzelist;
-    }
-
     public void addAnalyzeResult(String date, String schoolName,
                                  String classroom, String studentID, String dentName, String dmft, String studentName, String gender) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -291,6 +280,31 @@ public class DbHelper extends SQLiteOpenHelper {
         } else {
             // Inserting record
             db.insertOrThrow(TABLE_NAME_ANALYZE, null, values);
+            db.close();
+        }
+    }
+
+    public void addLoginData(String id, String username,
+                                 String pass, String firstname, String lastname,
+                             String email, String type) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(DENTIST_ID, id);
+        values.put(USERNAME, username);
+        values.put(PASSWORD, pass);
+        values.put(FIRSTNAME, firstname);
+        values.put(LASTNAME, lastname);
+        values.put(EMAIL, email);
+        values.put(TYPE, type);
+
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_DENTIST + " WHERE " + DENTIST_ID + " ='" + id + "'", null);
+        if (c.moveToFirst()) {
+//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
+            db.update(TABLE_NAME_DENTIST, values, DENTIST_ID + " ='" + id, null);
+            db.close();
+        } else {
+            // Inserting record
+            db.insertOrThrow(TABLE_NAME_DENTIST, null, values);
             db.close();
         }
     }

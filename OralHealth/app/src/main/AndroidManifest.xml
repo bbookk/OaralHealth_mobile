@@ -32,21 +32,16 @@
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape">
+        </activity>
         <activity
             android:name=".SignupActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".MenuActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".SuccessActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".ExcelActivity"
             android:screenOrientation="landscape" />
         <activity
             android:name=".AnalyzeActivity"
@@ -56,9 +51,6 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".DetectActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".ExportActivity"
             android:screenOrientation="landscape" />
     </application>
 
