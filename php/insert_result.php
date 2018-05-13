@@ -37,20 +37,11 @@ $teeth_47 = $_POST["teeth_47"];
 $teeth_48 = $_POST["teeth_48"];
 $record_date = $_POST["record_date"];
 $dentist_name = $_POST["dentist_name"];
+$analyze_status = $_POST["analyze_status"];
 
 $conn->set_charset("utf8");
-$sql = "SELECT id FROM result_status WHERE id='$std_id'";
-$update = "update result_status set 
-teeth_11='$teeth_11', teeth_12='$teeth_12', teeth_13='$teeth_13', teeth_14='$teeth_14',
-teeth_15='$teeth_15', teeth_16='$teeth_16', teeth_17='$teeth_17', teeth_18='$teeth_18',
-teeth_21='$teeth_21', teeth_22='$teeth_22', teeth_23='$teeth_23', teeth_24='$teeth_24',
-teeth_25='$teeth_25', teeth_26='$teeth_26', teeth_27='$teeth_27', teeth_28='$teeth_28',
-teeth_31='$teeth_31', teeth_32='$teeth_32', teeth_33='$teeth_33', teeth_34='$teeth_34',
-teeth_35='$teeth_35', teeth_36='$teeth_36', teeth_37='$teeth_37', teeth_38='$teeth_38',
-teeth_41='$teeth_41', teeth_42='$teeth_42', teeth_43='$teeth_43', teeth_44='$teeth_44',
-teeth_45='$teeth_45', teeth_46='$teeth_46', teeth_47='$teeth_47', teeth_48='$teeth_48' , record_date='$record_date' , dentist_name='$dentist_name' where id='$std_id'";
 
-$Sql_Query = "insert into result_status(`id`, `name`, 
+$Sql_Query = "INSERT INTO result_status(`student_id`, `student_name`, 
 `teeth_11`, `teeth_12`, `teeth_13`, `teeth_14`, 
 `teeth_15`, `teeth_16`, `teeth_17`, `teeth_18`,
 `teeth_21`, `teeth_22`, `teeth_23`, `teeth_24`, 
@@ -58,8 +49,8 @@ $Sql_Query = "insert into result_status(`id`, `name`,
 `teeth_31`, `teeth_32`, `teeth_33`, `teeth_34`, 
 `teeth_35`, `teeth_36`, `teeth_37`, `teeth_38`,
 `teeth_41`, `teeth_42`, `teeth_43`, `teeth_44`, 
-`teeth_45`, `teeth_46`, `teeth_47`, `teeth_48`, `record_date`, `dentist_name`)  
-        values ('".$std_id."','".$std_name."',
+`teeth_45`, `teeth_46`, `teeth_47`, `teeth_48`, `record_date`, `dentist_username`, 'analyze_status')  
+        VALUES ('".$std_id."','".$std_name."',
         '".$teeth_11."','".$teeth_12."','".$teeth_13."','".$teeth_14."',
         '".$teeth_15."','".$teeth_16."','".$teeth_17."','".$teeth_18."',
         '".$teeth_21."','".$teeth_22."','".$teeth_23."','".$teeth_24."',
@@ -67,37 +58,19 @@ $Sql_Query = "insert into result_status(`id`, `name`,
         '".$teeth_31."','".$teeth_32."','".$teeth_33."','".$teeth_34."',
         '".$teeth_35."','".$teeth_36."','".$teeth_37."','".$teeth_38."',
         '".$teeth_41."','".$teeth_42."','".$teeth_43."','".$teeth_44."',
-        '".$teeth_45."','".$teeth_46."','".$teeth_47."','".$teeth_48."','".$record_date."','".$dentist_name."')";
+        '".$teeth_45."','".$teeth_46."','".$teeth_47."','".$teeth_48."',
+        '".$record_date."','".$dentist_name."','".$analyze_status."')";
 
-        $query = "SELECT * FROM result_status WHERE id='$std_id'";
-        $result = mysqli_query($conn,$query);
-
-        if($result->num_rows > 0) {
-            if(mysqli_query($conn,$update)){
- 
-                echo 'Data update Successfully';
-      
-                }
-                else{
-                
-                echo 'Try Again';
-                
-                }
-        }else{
-            if(mysqli_query($conn,$Sql_Query)){
- 
-                echo 'Data insert Successfully';
-      
-                }
-                else{
-                
-                echo 'Try Again';
-                
-                }
+        if ($conn->query($Sql_Query) === TRUE) {
+            echo "Insert Success";
+        } else {
+            echo "Fail to insert";
         }
+
+        // echo json_encode($conn);
+        // echo json_encode($conn->query($Sql_Query));
         
-    
-        
-        mysqli_set_charset($conn,"utf8");
-        mysqli_close($conn);
+        //$newdata = array("Error"=>"false", "Message"=>"Success","data"=>$id);
+        // echo json_encode($newdata);
+        $conn->close();
 ?>

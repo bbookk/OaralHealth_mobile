@@ -4,23 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +28,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-
-import static java.sql.Types.INTEGER;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -161,7 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 }
                 else{
-                    Toast.makeText(LoginActivity.this,httpResponseMsg,Toast.LENGTH_LONG).show();
+//                    Toast.makeText(LoginActivity.this,httpResponseMsg,Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -269,10 +261,10 @@ public class LoginActivity extends AppCompatActivity {
         boolean status = false;
         if (bcrypt.checkpw(pass, hash)){
             status = true;
-            Toast.makeText(LoginActivity.this,"It match",Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this,"Login success",Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast.makeText(LoginActivity.this,"It not match",Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this,"Username or Password are in correct",Toast.LENGTH_SHORT).show();
             status = false;
         }
         return status;
@@ -281,7 +273,7 @@ public class LoginActivity extends AppCompatActivity {
     @SuppressLint("ResourceType")
     public void checkData() {
         int count = 0;
-        String myPath = this.getDatabasePath("mobile_oralHealth.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("OralHealth_project_cstu29.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_DENTIST;//Set name of your table
 

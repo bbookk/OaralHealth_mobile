@@ -12,8 +12,8 @@ import java.util.List;
 import static android.content.ContentValues.TAG;
 
 public class DbHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "mobile_oralHealth.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final String DATABASE_NAME = "OralHealth_project_cstu29.db";
+    private static final int DATABASE_VERSION = 4;
     public static final String TABLE_NAME = "student";
     public static final String STD_ID = "studentID";
     public static final String NAME = "studentName";
@@ -65,6 +65,8 @@ public class DbHelper extends SQLiteOpenHelper {
     public static final String EMAIL = "email";
     public static final String TYPE = "type";
     public static final String GENDER = "gender";
+    public static final String RESULT_ID = "result_id";
+    public static final String ANALYZE_ID = "analyze_id";
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -78,7 +80,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(sqlCmd);
 
         String resultTable ="CREATE TABLE " + TABLE_NAME_RESULT+ " ("+
-                STD_ID + " INTEGER PRIMARY KEY, "+
+                RESULT_ID + " INTEGER PRIMARY KEY, "+
+                STD_ID + " INTEGER NOT NULL, "+
                 NAME + " TEXT NOT NULL, " +
                 TEETH_11 + " TEXT , "+
                 TEETH_12 + " TEXT , "+
@@ -119,10 +122,11 @@ public class DbHelper extends SQLiteOpenHelper {
 
 
         String analyzeTable ="CREATE TABLE " + TABLE_NAME_ANALYZE+ " ("+
+                ANALYZE_ID + " INTEGER PRIMARY KEY, "+
                 RECORD_DATE + " TEXT NOT NULL, "+
                 SCHOOL_NAME + " TEXT NOT NULL, "+
                 CLASSROOM + " TEXT NOT NULL, "+
-                STD_ID + " INTEGER PRIMARY KEY, "+
+                STD_ID + " INTEGER NOT NULL, "+
                 DENTIST_NAME + " TEXT NOT NULL, "+
                 DMFT + " INTEGER NOT NULL, "+
                 NAME + " TEXT NOT NULL, "+
@@ -242,18 +246,18 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(RECORD_DATE, record_dt);
         values.put(DENTIST_NAME, dent_name);
 
-        this.getReadableDatabase();
+//        this.getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_RESULT + " WHERE " + STD_ID + " ='" + id + "'", null);
-        if (c.moveToFirst()) {
-//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
-            db.update(TABLE_NAME_RESULT, values, STD_ID + " = " + id, null);
-            db.close();
-        } else {
+//        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_RESULT + " WHERE " + STD_ID + " ='" + id + "'", null);
+//        if (c.moveToFirst()) {
+////            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
+//            db.update(TABLE_NAME_RESULT, values, STD_ID + " = " + id, null);
+//            db.close();
+//        } else {
             // Inserting record
             db.insertOrThrow(TABLE_NAME_RESULT, null, values);
             db.close();
-        }
+//        }
     }
 
     public void addAnalyzeResult(String date, String schoolName,
@@ -269,13 +273,12 @@ public class DbHelper extends SQLiteOpenHelper {
         values.put(NAME, studentName);
         values.put(GENDER, gender);
 
-
         this.getReadableDatabase();
 
-        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_ANALYZE + " WHERE " + STD_ID + " ='" + studentID + "'", null);
+        Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_ANALYZE + " WHERE " + STD_ID + " ='" + studentID + "' AND "+ RECORD_DATE + " ='" + date + "'", null);
         if (c.moveToFirst()) {
-//            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
-            db.update(TABLE_NAME_ANALYZE, values, STD_ID + " = " + studentID, null);
+////            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
+            db.update(TABLE_NAME_ANALYZE, values, STD_ID + " = " + studentID +" AND "+RECORD_DATE + " = " + date, null);
             db.close();
         } else {
             // Inserting record
@@ -300,7 +303,7 @@ public class DbHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery("SELECT * FROM " + TABLE_NAME_DENTIST + " WHERE " + DENTIST_ID + " ='" + id + "'", null);
         if (c.moveToFirst()) {
 //            Toast.makeText(MainActivity.this, "Error record exist.", Toast.LENGTH_SHORT).show();
-            db.update(TABLE_NAME_DENTIST, values, DENTIST_ID + " ='" + id, null);
+            db.update(TABLE_NAME_DENTIST, values, DENTIST_ID + " = " + id, null);
             db.close();
         } else {
             // Inserting record

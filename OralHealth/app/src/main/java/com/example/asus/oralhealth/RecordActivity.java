@@ -48,8 +48,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
@@ -69,7 +71,6 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
     TextView showPtid, showPtName;
     MediaPlayer player;
     int index = 0;
-    int playlistIndex = 8;
     boolean check = true;
     LinearLayout row1, row2;
     DbHelper helper;
@@ -91,10 +92,11 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         captions.put(KWS_SEARCH, R.string.kws_caption);
         captions.put(COMMAND_SEARCH, R.string.digits_caption);
         setContentView(R.layout.activity_record);
+        player = new MediaPlayer();
 
         today_dt = getCurrentDate();
         dent_name = getIntent().getStringExtra("dentist_name");
-        Toast.makeText(RecordActivity.this, dent_name, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(RecordActivity.this, dent_name, Toast.LENGTH_SHORT).show();
 
         if (android.os.Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -102,10 +104,10 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
         }
 
         if (isNetworkAvailable() == true) {
-//            Toast.makeText(MainActivity.this, "Connection", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(RecordActivity.this, "Connection", Toast.LENGTH_SHORT).show();
             saveData();
         } else {
-            Toast.makeText(RecordActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(RecordActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -134,7 +136,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
         try {
             Cursor cursor = getAllNotes();
-//            showNotes(cursor);
+            showNotes(cursor);
         } finally { //close connection with DB
             helper.close();
         }
@@ -314,19 +316,25 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
             });
         }
     }
-
+    int playlistIndex = 1;
     public void playVoice() {
-        if (playlistIndex == 0) {
+        String fileName = "sound" + playlistIndex;
+        int raw_id = getResources().getIdentifier(fileName, "raw", getPackageName());
+        if (playlistIndex == 33) {
             check = false;
         }
         if (check) {
-            player = new MediaPlayer();
-            String fileName = "sound1" + playlistIndex;
-            int id = getResources().getIdentifier(fileName, "raw", getPackageName());
-            player = MediaPlayer.create(this, id);
-            player.setLooping(false);
-            player.start();
-            playlistIndex--;
+//            Toast.makeText(RecordActivity.this, raw_id, Toast.LENGTH_SHORT).show();
+            final MediaPlayer mp = MediaPlayer.create(this,raw_id);
+            mp.start();
+            mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mediaPlayer) {
+                    mp.release();
+                }
+            });
+            playlistIndex++;
+//            Toast.makeText(RecordActivity.this, playlistIndex, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -404,7 +412,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     result[index] = "0";
                     myButton[index].setBackgroundResource(R.color.green);
                     break;
-                case "ดีหมด":
+                case "ดี":
                     result[index] = "0";
                     myButton[index].setBackgroundResource(R.color.green);
                     break;
@@ -424,7 +432,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     result[index] = "2";
                     myButton[index].setBackgroundResource(R.color.red);
                     break;
-                case "บราโว":
+                case "บราโว่":
                     result[index] = "B";
                     myButton[index].setBackgroundResource(R.color.red);
                     break;
@@ -452,23 +460,33 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     result[index] = "D";
                     myButton[index].setBackgroundResource(R.color.yellow);
                     break;
+                case "อุด":
+                    result[index] = "D";
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
                 case "ห้า":
                     result[index] = "5";
+                    myButton[index].setBackgroundResource(R.color.bg);
                     break;
                 case "มิสซิ่ง":
                     result[index] = "5";
+                    myButton[index].setBackgroundResource(R.color.bg);
                     break;
                 case "หก":
                     result[index] = "6";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
                 case "ซีลแลนท์":
                     result[index] = "6";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
                 case "เจ็ด":
                     result[index] = "7";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
                 case "คราวน์":
                     result[index] = "7";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
                 case "แปด":
                     result[index] = "8";
@@ -488,13 +506,23 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     break;
                 case "ฟอกซ์ทรอต":
                     result[index] = "F";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
                 case "กอล์ฟ":
                     result[index] = "G";
                     myButton[index].setBackgroundResource(R.color.yellow);
                     break;
-                case "เสร็จ":
-                    finish();
+                case "แครี่ส์":
+                    result[index] = "4";
+                    myButton[index].setBackgroundResource(R.color.bg);
+                    break;
+                case "ครอบ":
+                    result[index] = "4";
+                    myButton[index].setBackgroundResource(R.color.yellow);
+                    break;
+                case "ครอบฟัน":
+                    result[index] = "4";
+                    myButton[index].setBackgroundResource(R.color.yellow);
                     break;
             }
 //            Toast.makeText(RecordActivity.this, "index : " + index + " " + teeth_no + " : " + result[index], Toast.LENGTH_SHORT).show();
@@ -528,12 +556,13 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     addToSQLite();
 //                finish();
                     Intent i = new Intent(RecordActivity.this, SuccessActivity.class);
+                    i.putExtra("den_username", dent_name);
                     startActivity(i);
                 }
             });
         }
 
-        Toast.makeText(RecordActivity.this, i + " " + index + " " + myList.get(i), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(RecordActivity.this, i + " " + index + " " + myList.get(i), Toast.LENGTH_SHORT).show();
     }
 
     private void addToSQLite() {
@@ -548,27 +577,34 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 myButton[28].getText().toString(), myButton[29].getText().toString(), myButton[30].getText().toString(), myButton[31].getText().toString(),today_dt,dent_name);
     }
 
-    private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME,
-            DbHelper.TEETH_11, DbHelper.TEETH_12, DbHelper.TEETH_13, DbHelper.TEETH_14,
-            DbHelper.TEETH_15, DbHelper.TEETH_16, DbHelper.TEETH_17, DbHelper.TEETH_18,
-            DbHelper.TEETH_21, DbHelper.TEETH_22, DbHelper.TEETH_23, DbHelper.TEETH_24,
-            DbHelper.TEETH_25, DbHelper.TEETH_26, DbHelper.TEETH_27, DbHelper.TEETH_28,
-            DbHelper.TEETH_31, DbHelper.TEETH_32, DbHelper.TEETH_33, DbHelper.TEETH_34,
-            DbHelper.TEETH_35, DbHelper.TEETH_36, DbHelper.TEETH_37, DbHelper.TEETH_38,
-            DbHelper.TEETH_41, DbHelper.TEETH_42, DbHelper.TEETH_43, DbHelper.TEETH_44,
-            DbHelper.TEETH_45, DbHelper.TEETH_46, DbHelper.TEETH_47, DbHelper.TEETH_48, DbHelper.RECORD_DATE, DbHelper.DENTIST_NAME};
+    private static String[] COLUMNS = {DbHelper.STD_ID, DbHelper.NAME};
 
     private static String ORDER_BY = DbHelper.STD_ID + " DESC";
 
     private Cursor getAllNotes() {
         SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.query(DbHelper.TABLE_NAME_RESULT, COLUMNS, null, null, null, null, ORDER_BY);
+        Cursor cursor = db.query(DbHelper.TABLE_NAME, COLUMNS, null, null, null, null, ORDER_BY);
         startManagingCursor(cursor);
         return cursor;
     }
 
+    private void showNotes(Cursor cursor) {
+        StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
+
+        while (cursor.moveToNext()) {
+            long id = cursor.getLong(0); //read column 0 _ID
+            String content = cursor.getString(1); // Read Colum 2 CONTENT
+
+            builder.append("ลำดับ ").append(id).append(": ");
+            builder.append("\t").append(content).append("\n");
+        }
+
+//        TextView tv = (TextView) findViewById(R.id.testView);
+//        tv.setText(String.valueOf(helper.getAllUsers()));
+    }
+
     private JSONArray getResults() {
-        String myPath = this.getDatabasePath("mobile_oralHealth.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("OralHealth_project_cstu29.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_RESULT;//Set name of your table
 
@@ -767,7 +803,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 teeth_46[i] = result.getJSONObject(i).getString("teeth_46");
                 teeth_47[i] = result.getJSONObject(i).getString("teeth_47");
                 teeth_48[i] = result.getJSONObject(i).getString("teeth_48");
-                record_dt[i] = result.getJSONObject(i).getString("record_date");
+//                record_dt[i] = result.getJSONObject(i).getString("record_date");
                 dent_name[i] = result.getJSONObject(i).getString("dentist_name");
             }
         } catch (JSONException e) {
@@ -781,7 +817,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                     teeth_31[i], teeth_32[i], teeth_33[i], teeth_34[i],
                     teeth_35[i], teeth_36[i], teeth_37[i], teeth_38[i],
                     teeth_41[i], teeth_42[i], teeth_43[i], teeth_44[i],
-                    teeth_45[i], teeth_46[i], teeth_47[i], teeth_48[i], record_dt[i], dent_name[i]);
+                    teeth_45[i], teeth_46[i], teeth_47[i], teeth_48[i], dent_name[i]);
         }
     }
 
@@ -793,7 +829,7 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                            final String teeth_31, final String teeth_32, final String teeth_33, final String teeth_34,
                            final String teeth_35, final String teeth_36, final String teeth_37, final String teeth_38,
                            final String teeth_41, final String teeth_42, final String teeth_43, final String teeth_44,
-                           final String teeth_45, final String teeth_46, final String teeth_47, final String teeth_48, final String record_dt, final String dent_name) {
+                           final String teeth_45, final String teeth_46, final String teeth_47, final String teeth_48, final String dent_name) {
 
         class SendPostReqAsyncTask extends AsyncTask<String, Void, String> {
 
@@ -834,12 +870,14 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 String teeth_46Holder = teeth_46;
                 String teeth_47Holder = teeth_47;
                 String teeth_48Holder = teeth_48;
-                String recordDt_Holder = record_dt;
+                String recordDt_Holder = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//                String recordDt_Holder = record_dt;
                 String dentName_Holder = dent_name;
+                String analyze_statusHolder = "0";
 
 
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
+//                if(!nameValuePairs.contains(idHolder) && !nameValuePairs.contains(recordDt_Holder)){
                 nameValuePairs.add(new BasicNameValuePair("std_id", idHolder));
                 nameValuePairs.add(new BasicNameValuePair("studentName", NameHolder));
                 nameValuePairs.add(new BasicNameValuePair("teeth_11", teeth_11Holder));
@@ -876,17 +914,18 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
                 nameValuePairs.add(new BasicNameValuePair("teeth_48", teeth_48Holder));
                 nameValuePairs.add(new BasicNameValuePair("record_date", recordDt_Holder));
                 nameValuePairs.add(new BasicNameValuePair("dentist_name", dentName_Holder));
-
+                nameValuePairs.add(new BasicNameValuePair("analyze_status", analyze_statusHolder));
+//                }
 
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
 
                     HttpPost httpPost = new HttpPost(ServerURL);
 
+//                    TextView tv = (TextView) findViewById(R.id.testView);
+//                    tv.setText(nameValuePairs.toString());
                     httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
 
-                    TextView tv = (TextView) findViewById(R.id.testView);
-                    tv.setText(nameValuePairs.toString());
                     HttpResponse httpResponse = httpClient.execute(httpPost);
 
                     HttpEntity httpEntity = httpResponse.getEntity();
@@ -904,14 +943,17 @@ public class RecordActivity extends AppCompatActivity implements RecognitionList
 
                 super.onPostExecute(result);
 
-                Toast.makeText(RecordActivity.this, "Data Submit Successfully", Toast.LENGTH_LONG).show();
+//                Toast.makeText(RecordActivity.this, "Data Submit Successfully", Toast.LENGTH_LONG).show();
 
             }
         }
 
         SendPostReqAsyncTask sendPostReqAsyncTask = new SendPostReqAsyncTask();
 
-        sendPostReqAsyncTask.execute(id, name, teeth_11);
+        sendPostReqAsyncTask.execute(id, name, teeth_11, teeth_12, teeth_13, teeth_14, teeth_15, teeth_16, teeth_17, teeth_18,
+                teeth_21, teeth_22, teeth_23, teeth_24, teeth_25, teeth_26, teeth_27, teeth_28,
+                teeth_31, teeth_32, teeth_33, teeth_34, teeth_35, teeth_36, teeth_37, teeth_38,
+                teeth_41, teeth_42, teeth_43, teeth_44, teeth_45, teeth_46, teeth_47, teeth_48);
 
     }
 

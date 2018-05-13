@@ -8,15 +8,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
-
-import cz.msebera.android.httpclient.extras.Base64;
 
 public class AnalyzeActivity extends AppCompatActivity {
 
@@ -62,8 +57,6 @@ public class AnalyzeActivity extends AppCompatActivity {
         dent_name = getIntent().getStringExtra("dentist_name");
         room = (Spinner) findViewById(R.id.room);
         school = (Spinner) findViewById(R.id.school);
-        classroomList = new ArrayList<String>();
-        schoolList = new ArrayList<String>();
 //        Toast.makeText(AnalyzeActivity.this, dent_name, Toast.LENGTH_SHORT).show();
 
         if (isNetworkAvailable() == true) {
@@ -164,7 +157,7 @@ public class AnalyzeActivity extends AppCompatActivity {
 
     private static String[] COLUMNS = {DbHelper.RECORD_DATE, DbHelper.SCHOOL_NAME, DbHelper.CLASSROOM, DbHelper.STD_ID,
             DbHelper.DENTIST_NAME, DbHelper.DMFT, DbHelper.NAME, DbHelper.GENDER};
-    private static String ORDER_BY = DbHelper.CLASSROOM + " DESC";
+    private static String ORDER_BY = DbHelper.STD_ID + " ASC";
 
     private Cursor getAllNotes() {
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -177,18 +170,21 @@ public class AnalyzeActivity extends AppCompatActivity {
         StringBuilder builder = new StringBuilder("ข้อความที่บันทึกไว้:\n\n");
 
         while (cursor.moveToNext()) {
+            String id = cursor.getString(0);
             String content = cursor.getString(1);
 
-//            builder.append("ลำดับ ").append(id).append(": ");
-//            builder.append("\t").append(content).append("\n");
+            builder.append("ลำดับ ").append(id).append(": ");
+            builder.append("\t").append(content).append("\n");
         }
 
-//        TextView tv = (TextView) findViewById(R.id.testView);
-//        tv.setText(builder);
+        TextView tv = (TextView) findViewById(R.id.testView);
+        tv.setText(builder);
     }
 
     private void addToSpinner(Cursor cursor) {
 //        Cursor cursor = getAllNotes();
+        classroomList = new ArrayList<String>();
+        schoolList = new ArrayList<String>();
         while (cursor.moveToNext()) {
             String schoolName = cursor.getString(1);
             String room = cursor.getString(2);
@@ -249,6 +245,7 @@ public class AnalyzeActivity extends AppCompatActivity {
             json = (TextView) findViewById(R.id.testView);
 
             json_string = result;
+//            json.setText(result);
             if (json_string == null) {
                 Toast.makeText(AnalyzeActivity.this, "Get Json Before.", Toast.LENGTH_SHORT).show();
             } else {
@@ -275,6 +272,7 @@ public class AnalyzeActivity extends AppCompatActivity {
                         dmft[count] = jo.getString("dmft");
                         studentName [count] = jo.getString("studentName");
                         gender[count] = jo.getString("gender");
+//                        json.setText(date[0]);
                         try {
                             helper.addAnalyzeResult(date[count], schoolName[count], classroom[count],
                                     studentId[count], dentName[count], dmft[count], studentName[count], gender[count]);

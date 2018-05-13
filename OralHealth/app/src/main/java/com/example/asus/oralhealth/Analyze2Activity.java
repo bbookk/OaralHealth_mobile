@@ -84,7 +84,7 @@ public class Analyze2Activity extends AppCompatActivity {
     public void addRow() {
         tl = (TableLayout) findViewById(R.id.main_table);
         int count = 0;
-        String myPath = this.getDatabasePath("mobile_oralHealth.db").toString();// Set path to your database
+        String myPath = this.getDatabasePath("OralHealth_project_cstu29.db").toString();// Set path to your database
 
         String myTable = DbHelper.TABLE_NAME_ANALYZE;//Set name of your table
 
@@ -103,11 +103,11 @@ public class Analyze2Activity extends AppCompatActivity {
 //            String date = cursor.getString(0);
 //            String schoolName = cursor.getString(1);
 //            String classroom = cursor.getString(2);
-            String studentId = cursor.getString(3);
-            String dentName = cursor.getString(4);
-            String dmft = cursor.getString(5);
-            String studentName = cursor.getString(6);
-            String gender = cursor.getString(7);
+            String studentId = cursor.getString(4);
+            String dentName = cursor.getString(5);
+            String dmft = cursor.getString(6);
+            String studentName = cursor.getString(7);
+            String gender = cursor.getString(8);
 
 // Create the table row
             TableRow tr = new TableRow(this);
